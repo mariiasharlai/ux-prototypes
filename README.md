@@ -14,3 +14,28 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the Oxlint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+
+## Run locally
+
+Open PowerShell in the project folder and install dependencies:
+
+```powershell
+cd "C:\Dasha\VETO\Digital Hub\ux-prototypes"
+npm install
+```
+
+Start the development server with live reload:
+
+```powershell
+npm run dev
+```
+
+Open the URL shown in the terminal, usually `http://localhost:5173`.
+
+## Other commands
+
+```powershell
+npm run lint     # check the code
+npm run build    # create a production build in dist/
+npm run preview  # preview the production build locally
+```
