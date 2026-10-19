@@ -356,20 +356,61 @@ function Card({ children, className = "" }) {
 
 function ProfileScreen({ profile, completion, onNavigate }) {
   const [activeTab, setActiveTab] = useState("professional");
-  const [personalOpen, setPersonalOpen] = useState(false);
-  const [statusOpen, setStatusOpen] = useState(false);
   const [profileHelpOpen, setProfileHelpOpen] = useState(false);
   const [nextStepOpen, setNextStepOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [photoManagementOpen, setPhotoManagementOpen] = useState(false);
+  const [personalInformationOpen, setPersonalInformationOpen] = useState(false);
+  const [activeSheet, setActiveSheet] = useState(null);
   const [photoRemoved, setPhotoRemoved] = useState(false);
   const [photoVisibility, setPhotoVisibility] = useState("community");
   const [jobStatus, setJobStatus] = useState("I am not looking for a job");
+  const [personalDetails, setPersonalDetails] = useState(() => {
+    const [name, ...surname] = profile.fullName.split(" ");
+    return {
+      name,
+      surname: surname.join(" "),
+      dateOfBirth: "1995-03-12",
+      citizenship: profile.nationality,
+      location: profile.location,
+      email: profile.email,
+      phone: profile.phone,
+    };
+  });
 
   const statusOptions = [
-    "Actively looking for a job",
-    "Open to offers",
+    "Actively searching for a job",
+    "I'm considering offers",
     "I am not looking for a job",
+    "I have been offered a job, still thinking",
+    "I am already starting my new job",
   ];
+
+  if (personalInformationOpen) {
+    return (
+      <PersonalInformationScreen
+        details={personalDetails}
+        onBack={() => setPersonalInformationOpen(false)}
+        onSave={(details) => { setPersonalDetails(details); setPersonalInformationOpen(false); }}
+      />
+    );
+  }
+
+  if (photoManagementOpen) {
+    return (
+      <PhotoManagementScreen
+        photoRemoved={photoRemoved}
+        photoVisibility={photoVisibility}
+        activeSheet={activeSheet}
+        onBack={() => { setPhotoManagementOpen(false); setActiveSheet(null); }}
+        onVisibilityChange={setPhotoVisibility}
+        onOpenSheet={setActiveSheet}
+        onCloseSheet={() => setActiveSheet(null)}
+        onDelete={() => { setPhotoRemoved(true); setActiveSheet(null); }}
+        onAddPhoto={() => { setPhotoRemoved(false); setActiveSheet(null); }}
+      />
+    );
+  }
 
   return (
     <div className="profileMobileScreen">
@@ -392,80 +433,30 @@ function ProfileScreen({ profile, completion, onNavigate }) {
       </header>
 
       <section className="profileHeaderBlock" aria-labelledby="profile-name">
-        <div className={`profilePhoto ${photoRemoved ? "removed" : ""}`} aria-label={photoRemoved ? "No profile photo" : "Profile photo"}>
-          {photoRemoved ? <ProtoIcon name="profile" /> : "SD"}
+        <div className="profilePhotoWrap">
+          <div className={`profilePhoto ${photoRemoved ? "removed" : ""}`} aria-label={photoRemoved ? "No profile photo" : "Profile photo"}>
+            {photoRemoved ? <ProtoIcon name="profile" /> : "SD"}
+          </div>
+          <button className="photoEditButton" aria-label="Manage profile photo" onClick={() => setPhotoManagementOpen(true)}>
+            <ProtoIcon name="pencil" />
+          </button>
         </div>
-        <div className="photoActions">
-          <button onClick={() => setPhotoRemoved(false)}>Edit photo</button>
-          <button onClick={() => setPhotoRemoved(true)}>Remove photo</button>
-        </div>
-        <h1 id="profile-name">{profile.fullName}</h1>
-
-        <fieldset className="visibilityOptions">
-          <legend>Photo visibility</legend>
-          <label>
-            <input
-              type="radio"
-              name="photo-visibility"
-              value="community"
-              checked={photoVisibility === "community"}
-              onChange={(event) => setPhotoVisibility(event.target.value)}
-            />
-            <span><strong>Visible in Community</strong><small>Community members can see your photo.</small></span>
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="photo-visibility"
-              value="private"
-              checked={photoVisibility === "private"}
-              onChange={(event) => setPhotoVisibility(event.target.value)}
-            />
-            <span><strong>Private — only I can see it</strong><small>Your profile keeps the photo private.</small></span>
-          </label>
-        </fieldset>
-        <p className="privacyPrototypeNote">Employers see your photo and full name only after a match or candidate consent stage.</p>
+        <h1 id="profile-name">{personalDetails.name} {personalDetails.surname}</h1>
 
         <button
           className="profileDisclosureRow"
-          aria-expanded={personalOpen}
-          aria-controls="personal-information-panel"
-          onClick={() => setPersonalOpen((open) => !open)}
+          aria-haspopup="dialog"
+          onClick={() => setPersonalInformationOpen(true)}
         >
           <span>Personal information</span>
-          <span aria-hidden="true">{personalOpen ? "↓" : "→"}</span>
+          <ProtoIcon name="chevron-down" />
         </button>
-        {personalOpen && (
-          <div className="personalInfoPanel" id="personal-information-panel">
-            <Info label="Nationality" value={profile.nationality} />
-            <Info label="Date of birth" value="12 March 1995" />
-            <Info label="Current location" value={profile.location} />
-            <Info label="Contact email" value={profile.email} />
-            <Info label="Phone number" value={profile.phone} />
-          </div>
-        )}
 
         <div className="jobStatusControl">
-          <span className="controlLabel">Job search status</span>
-          <button aria-expanded={statusOpen} onClick={() => setStatusOpen((open) => !open)}>
+          <button aria-haspopup="dialog" aria-expanded={activeSheet === "status"} onClick={() => setActiveSheet("status")}>
             <span>{jobStatus}</span>
-            <span aria-hidden="true">⌄</span>
+            <ProtoIcon name="chevron-down" />
           </button>
-          {statusOpen && (
-            <div className="statusOptions" role="listbox" aria-label="Job search status options">
-              {statusOptions.map((option) => (
-                <button
-                  key={option}
-                  role="option"
-                  aria-selected={jobStatus === option}
-                  onClick={() => { setJobStatus(option); setStatusOpen(false); }}
-                >
-                  <span>{option}</span>
-                  {jobStatus === option && <span aria-hidden="true">✓</span>}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
@@ -497,7 +488,7 @@ function ProfileScreen({ profile, completion, onNavigate }) {
               aria-label="About the professional profile"
               aria-expanded={profileHelpOpen}
               onClick={() => setProfileHelpOpen((open) => !open)}
-            >?</button>
+            ><span>?</span></button>
           </div>
           {profileHelpOpen && (
             <p className="profileHelpText">Your professional profile is the reusable source for your experience, education and skills. You control what is included in each CV.</p>
@@ -562,6 +553,134 @@ function ProfileScreen({ profile, completion, onNavigate }) {
         onNavigate={onNavigate}
         onMore={() => setMenuOpen((open) => !open)}
       />
+      {activeSheet === "status" && (
+        <BottomSheet title="Your search status" onClose={() => setActiveSheet(null)}>
+          <div className="sheetOptionList" role="radiogroup" aria-label="Your search status">
+            {statusOptions.map((option) => (
+              <button
+                key={option}
+                className="sheetSelectionRow"
+                role="radio"
+                aria-checked={jobStatus === option}
+                onClick={() => { setJobStatus(option); setActiveSheet(null); }}
+              >
+                <span>{option}</span>
+                <span className={`radioIndicator ${jobStatus === option ? "selected" : ""}`} aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
+function PersonalInformationScreen({ details, onBack, onSave }) {
+  const [draft, setDraft] = useState(details);
+  const setField = (field, value) => setDraft((current) => ({ ...current, [field]: value }));
+
+  return (
+    <div className="personalInformationScreen">
+      <header className="personalInfoScreenBar">
+        <button aria-label="Back to profile" onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <h1>Personal information</h1>
+        <span aria-hidden="true" />
+      </header>
+      <main className="personalInfoForm">
+        <label className="personalField">
+          <span>Name</span>
+          <input value={draft.name} onChange={(event) => setField("name", event.target.value)} />
+        </label>
+        <label className="personalField">
+          <span>Surname</span>
+          <input value={draft.surname} onChange={(event) => setField("surname", event.target.value)} />
+        </label>
+        <label className="personalField datePersonalField">
+          <span>Date of birth</span>
+          <div>
+            <input type="date" value={draft.dateOfBirth} onChange={(event) => setField("dateOfBirth", event.target.value)} />
+            <ProtoIcon name="calendar" />
+          </div>
+        </label>
+        <label className="personalField">
+          <span>Citizenship</span>
+          <input value={draft.citizenship} onChange={(event) => setField("citizenship", event.target.value)} />
+        </label>
+        <label className="personalField">
+          <span>Current location</span>
+          <input value={draft.location} onChange={(event) => setField("location", event.target.value)} />
+        </label>
+        <label className="personalField">
+          <span>Contact email</span>
+          <input type="email" value={draft.email} onChange={(event) => setField("email", event.target.value)} />
+        </label>
+        <label className="personalField">
+          <span>Phone number</span>
+          <input type="tel" value={draft.phone} onChange={(event) => setField("phone", event.target.value)} />
+        </label>
+        <button className="personalSaveButton" onClick={() => onSave(draft)}>Save</button>
+      </main>
+    </div>
+  );
+}
+
+function PhotoManagementScreen({ photoRemoved, photoVisibility, activeSheet, onBack, onVisibilityChange, onOpenSheet, onCloseSheet, onDelete, onAddPhoto }) {
+  return (
+    <div className="photoManagementScreen">
+      <header className="photoManagementBar">
+        <button className="photoScreenBack" aria-label="Back to profile" onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <span>Profile photo</span>
+        <div className="photoScreenActions">
+          <button aria-label="Add photo" onClick={() => onOpenSheet("add-photo")}><ProtoIcon name="plus" /></button>
+          <button aria-label="Photo options" onClick={() => onOpenSheet("photo-options")}><ProtoIcon name="more" /></button>
+        </div>
+      </header>
+
+      <main className="photoManagementContent">
+        <div className={`photoManagementPreview ${photoRemoved ? "empty" : ""}`} aria-label={photoRemoved ? "Empty photo placeholder" : "Profile photo preview"}>
+          {photoRemoved ? <><ProtoIcon name="profile" /><span>No photo</span></> : "SD"}
+        </div>
+        <div className="photoVisibilityList" role="radiogroup" aria-label="Photo visibility">
+          <button role="radio" aria-checked={photoVisibility === "community"} onClick={() => onVisibilityChange("community")}>
+            <span>Visible in Community</span>
+            <span className={`radioIndicator ${photoVisibility === "community" ? "selected" : ""}`} aria-hidden="true" />
+          </button>
+          <button role="radio" aria-checked={photoVisibility === "private"} onClick={() => onVisibilityChange("private")}>
+            <span>Private — only I can see it</span>
+            <span className={`radioIndicator ${photoVisibility === "private" ? "selected" : ""}`} aria-hidden="true" />
+          </button>
+        </div>
+      </main>
+
+      {activeSheet === "add-photo" && (
+        <BottomSheet title="Add a photo" onClose={onCloseSheet}>
+          <div className="sheetActionList">
+            <button onClick={onAddPhoto}>Choose from gallery<ProtoIcon name="image" /></button>
+            <button onClick={onAddPhoto}>Take a photo<ProtoIcon name="camera" /></button>
+          </div>
+        </BottomSheet>
+      )}
+      {activeSheet === "photo-options" && (
+        <BottomSheet onClose={onCloseSheet}>
+          <div className="sheetActionList">
+            <button onClick={onCloseSheet}>Download<ProtoIcon name="download" /></button>
+            <button className="deleteSheetAction" onClick={onDelete}>Delete<ProtoIcon name="trash" /></button>
+          </div>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
+function BottomSheet({ title, children, onClose }) {
+  return (
+    <div className="bottomSheetOverlay" role="presentation">
+      <button className="bottomSheetBackdrop" aria-label="Close sheet" onClick={onClose} />
+      <section className="bottomSheet" role="dialog" aria-modal="true" aria-label={title || "Options"}>
+        <div className="sheetHandle" />
+        {title && <h2>{title}</h2>}
+        {children}
+      </section>
     </div>
   );
 }
@@ -602,6 +721,15 @@ function MobileBottomNav({ active, onNavigate, onMore }) {
 
 function ProtoIcon({ name }) {
   if (name === "menu") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
+  if (name === "arrow-left") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>;
+  if (name === "chevron-down") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 9 7 7 7-7" /></svg>;
+  if (name === "pencil") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19 8.5 15.5 5zM13.8 6.7l3.5 3.5" /></svg>;
+  if (name === "plus") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>;
+  if (name === "calendar") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1.5" /><path d="M8 3v4M16 3v4M4 10h16" /></svg>;
+  if (name === "download") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 19h14" /></svg>;
+  if (name === "trash") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5M14 11v5" /></svg>;
+  if (name === "image") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="1" /><circle cx="9" cy="10" r="1.5" /><path d="m5 17 4.5-4 3 2.5 2.5-2 4 3.5" /></svg>;
+  if (name === "camera") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.3-2h7.4L17 8h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>;
   if (name === "jobs") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h16v11H4zM9 8.5V6h6v2.5M4 13h16" /></svg>;
   if (name === "country") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c3-1.2 5.7-.6 8 1.2v12c-2.3-1.8-5-2.4-8-1.2zM20 5.5c-3-1.2-5.7-.6-8 1.2v12c2.3-1.8 5-2.4 8-1.2z" /></svg>;
   if (name === "community") return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.3" /><path d="M3.5 19c.4-3.3 2.3-5 5.5-5s5.1 1.7 5.5 5M14 14.5c3.5-.5 5.5 1 6 4.5" /></svg>;
