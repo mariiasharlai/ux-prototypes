@@ -179,8 +179,16 @@ function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (screen === "profile") {
+    return (
+      <div className="app profileMode">
+        <ProfileScreen profile={profile} completion={completion} onNavigate={go} />
+      </div>
+    );
+  }
+
   return (
-    <div className="app">
+    <div className="app hasBottomNav">
       <button
         className={`navBackdrop ${mobileNavOpen ? "visible" : ""}`}
         aria-label="Close navigation"
@@ -230,13 +238,6 @@ function App() {
           ))}
         </div>
 
-        {screen === "profile" && (
-          <ProfileScreen
-            profile={profile}
-            completion={completion}
-            onNext={() => go("country")}
-          />
-        )}
         {screen === "country" && <CountryScreen profile={profile} setProfile={setProfile} onNext={() => go("review")} />}
         {screen === "review" && (
           <ReviewScreen
@@ -267,6 +268,11 @@ function App() {
           />
         )}
       </main>
+      <MobileBottomNav
+        active={screen === "country" ? "country" : ["jobs", "vacancy", "match"].includes(screen) ? "jobs" : ""}
+        onNavigate={go}
+        onMore={() => setMobileNavOpen(true)}
+      />
     </div>
   );
 }
@@ -348,113 +354,260 @@ function Card({ children, className = "" }) {
   return <section className={`card ${className}`}>{children}</section>;
 }
 
-function SectionTitle({ icon, title, subtitle, action }) {
+function ProfileScreen({ profile, completion, onNavigate }) {
+  const [activeTab, setActiveTab] = useState("professional");
+  const [personalOpen, setPersonalOpen] = useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+  const [profileHelpOpen, setProfileHelpOpen] = useState(false);
+  const [nextStepOpen, setNextStepOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [photoRemoved, setPhotoRemoved] = useState(false);
+  const [photoVisibility, setPhotoVisibility] = useState("community");
+  const [jobStatus, setJobStatus] = useState("I am not looking for a job");
+
+  const statusOptions = [
+    "Actively looking for a job",
+    "Open to offers",
+    "I am not looking for a job",
+  ];
+
   return (
-    <div className="sectionTitle">
-      <div className="sectionIcon">{icon}</div>
-      <div className="sectionTitleText"><h3>{title}</h3><p>{subtitle}</p></div>
-      {action && <button className="textAction">{action}</button>}
+    <div className="profileMobileScreen">
+      <header className="profileAppBar">
+        <span>Profile</span>
+        <button
+          className="profileIconButton"
+          aria-label="Open profile menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <ProtoIcon name="menu" />
+        </button>
+        {menuOpen && (
+          <div className="profileMenu" role="menu">
+            <button role="menuitem">Help and support</button>
+            <button role="menuitem">Settings</button>
+          </div>
+        )}
+      </header>
+
+      <section className="profileHeaderBlock" aria-labelledby="profile-name">
+        <div className={`profilePhoto ${photoRemoved ? "removed" : ""}`} aria-label={photoRemoved ? "No profile photo" : "Profile photo"}>
+          {photoRemoved ? <ProtoIcon name="profile" /> : "SD"}
+        </div>
+        <div className="photoActions">
+          <button onClick={() => setPhotoRemoved(false)}>Edit photo</button>
+          <button onClick={() => setPhotoRemoved(true)}>Remove photo</button>
+        </div>
+        <h1 id="profile-name">{profile.fullName}</h1>
+
+        <fieldset className="visibilityOptions">
+          <legend>Photo visibility</legend>
+          <label>
+            <input
+              type="radio"
+              name="photo-visibility"
+              value="community"
+              checked={photoVisibility === "community"}
+              onChange={(event) => setPhotoVisibility(event.target.value)}
+            />
+            <span><strong>Visible in Community</strong><small>Community members can see your photo.</small></span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="photo-visibility"
+              value="private"
+              checked={photoVisibility === "private"}
+              onChange={(event) => setPhotoVisibility(event.target.value)}
+            />
+            <span><strong>Private — only I can see it</strong><small>Your profile keeps the photo private.</small></span>
+          </label>
+        </fieldset>
+        <p className="privacyPrototypeNote">Employers see your photo and full name only after a match or candidate consent stage.</p>
+
+        <button
+          className="profileDisclosureRow"
+          aria-expanded={personalOpen}
+          aria-controls="personal-information-panel"
+          onClick={() => setPersonalOpen((open) => !open)}
+        >
+          <span>Personal information</span>
+          <span aria-hidden="true">{personalOpen ? "↓" : "→"}</span>
+        </button>
+        {personalOpen && (
+          <div className="personalInfoPanel" id="personal-information-panel">
+            <Info label="Nationality" value={profile.nationality} />
+            <Info label="Date of birth" value="12 March 1995" />
+            <Info label="Current location" value={profile.location} />
+            <Info label="Contact email" value={profile.email} />
+            <Info label="Phone number" value={profile.phone} />
+          </div>
+        )}
+
+        <div className="jobStatusControl">
+          <span className="controlLabel">Job search status</span>
+          <button aria-expanded={statusOpen} onClick={() => setStatusOpen((open) => !open)}>
+            <span>{jobStatus}</span>
+            <span aria-hidden="true">⌄</span>
+          </button>
+          {statusOpen && (
+            <div className="statusOptions" role="listbox" aria-label="Job search status options">
+              {statusOptions.map((option) => (
+                <button
+                  key={option}
+                  role="option"
+                  aria-selected={jobStatus === option}
+                  onClick={() => { setJobStatus(option); setStatusOpen(false); }}
+                >
+                  <span>{option}</span>
+                  {jobStatus === option && <span aria-hidden="true">✓</span>}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <div className="profileTabs" role="tablist" aria-label="Profile content">
+        <button
+          role="tab"
+          aria-selected={activeTab === "professional"}
+          className={activeTab === "professional" ? "active" : ""}
+          onClick={() => setActiveTab("professional")}
+        >
+          Professional Profile
+        </button>
+        <button
+          role="tab"
+          aria-selected={activeTab === "cv"}
+          className={activeTab === "cv" ? "active" : ""}
+          onClick={() => setActiveTab("cv")}
+        >
+          CV Library
+        </button>
+      </div>
+
+      {activeTab === "professional" ? (
+        <main className="profileTabContent" role="tabpanel">
+          <div className="professionalTitleRow">
+            <h2>Professional Profile</h2>
+            <button
+              className="profileHelpButton"
+              aria-label="About the professional profile"
+              aria-expanded={profileHelpOpen}
+              onClick={() => setProfileHelpOpen((open) => !open)}
+            >?</button>
+          </div>
+          {profileHelpOpen && (
+            <p className="profileHelpText">Your professional profile is the reusable source for your experience, education and skills. You control what is included in each CV.</p>
+          )}
+
+          <button
+            className="progressNextStep"
+            aria-expanded={nextStepOpen}
+            onClick={() => setNextStepOpen((open) => !open)}
+          >
+            <span className="progressSummary">
+              <span><strong>{completion}%</strong><small>Profile complete</small></span>
+              <span className="progressTrack"><span style={{ width: `${completion}%` }} /></span>
+            </span>
+            <span className="nextStepSummary">
+              <small>Next step</small>
+              <strong>Add details about your English proficiency</strong>
+            </span>
+            <span className="accordionChevron" aria-hidden="true">{nextStepOpen ? "−" : "+"}</span>
+          </button>
+          {nextStepOpen && (
+            <div className="nextStepExplanation">Specific examples of how you use English at work help employers understand your communication readiness beyond a level label. This is a prototype recommendation only.</div>
+          )}
+
+          <div className="profileAccordions">
+            <ProfileAccordion title="Work Experience" defaultOpen>
+              {profile.experience.map((exp) => (
+                <article className="profileRecord" key={exp.id}>
+                  <strong>{exp.role}</strong>
+                  <span>{exp.company} · {exp.place}</span>
+                  <small>{exp.period}</small>
+                  <ul>{exp.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
+                </article>
+              ))}
+            </ProfileAccordion>
+
+            <ProfileAccordion title="Education">
+              {profile.education.map((item) => (
+                <article className="profileRecord" key={`${item.school}-${item.period}`}>
+                  <strong>{item.degree}</strong>
+                  <span>{item.school}</span>
+                  <small>{item.period}</small>
+                </article>
+              ))}
+            </ProfileAccordion>
+
+            <ProfileAccordion title="Skills">
+              <div className="neutralChips">{profile.skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
+            </ProfileAccordion>
+          </div>
+        </main>
+      ) : (
+        <main className="cvLibraryPlaceholder" role="tabpanel">
+          <div className="placeholderIcon"><ProtoIcon name="document" /></div>
+          <h2>CV Library</h2>
+          <p>Your saved and tailored CV versions will appear here.</p>
+        </main>
+      )}
+
+      <MobileBottomNav
+        active="profile"
+        onNavigate={onNavigate}
+        onMore={() => setMenuOpen((open) => !open)}
+      />
     </div>
   );
 }
 
-function ProfileScreen({ profile, completion, onNext }) {
+function ProfileAccordion({ title, defaultOpen = false, children }) {
+  const [open, setOpen] = useState(defaultOpen);
+  const panelId = `profile-section-${title.toLowerCase().replaceAll(" ", "-")}`;
   return (
-    <>
-      <PageIntro
-        eyebrow="YOUR PROFILE"
-        title="Professional Profile"
-        text="Build one trusted master profile. Rantau uses it to create country-ready and job-specific CV versions without inventing facts."
-        side={<NextStep>Complete your professional profile, then prepare it for your target country.</NextStep>}
-      />
-
-      <div className="gridLayout">
-        <div className="stack">
-          <Card>
-            <SectionTitle icon="👤" title="Personal information" subtitle="Basic details used across your profile." action="Edit" />
-            <div className="infoGrid">
-              <Info label="Full name" value={profile.fullName} />
-              <Info label="Nationality" value={profile.nationality} />
-              <Info label="Date of birth" value="12 March 1995" />
-              <Info label="Current location" value={profile.location} />
-              <Info label="Contact email" value={profile.email} />
-              <Info label="Phone number" value={profile.phone} />
-            </div>
-          </Card>
-
-          <Card>
-            <SectionTitle icon="💼" title="Work experience" subtitle="Most recent experience first." action="+ Add" />
-            {profile.experience.map((exp) => (
-              <div className="listRow" key={exp.id}>
-                <div>
-                  <strong>{exp.role}</strong>
-                  <span>{exp.company} · {exp.place}</span>
-                </div>
-                <small>{exp.period}</small>
-              </div>
-            ))}
-          </Card>
-
-          <Card>
-            <SectionTitle icon="🎓" title="Education" subtitle="Your education history." action="+ Add" />
-            {profile.education.map((e, i) => (
-              <div className="listRow" key={i}>
-                <div><strong>{e.degree}</strong><span>{e.school}</span></div>
-                <small>{e.period}</small>
-              </div>
-            ))}
-          </Card>
-
-          <Card>
-            <SectionTitle icon="⚙" title="Skills" subtitle="Relevant skills that employers can search." action="+ Add" />
-            <div className="chips">{profile.skills.map((s) => <span className="chip" key={s}>{s} ×</span>)}</div>
-          </Card>
-
-          <Card>
-            <SectionTitle icon="🌐" title="Languages" subtitle="Languages and proficiency levels." action="+ Add" />
-            <div className="chips">{profile.languages.map((s) => <span className="chip" key={s}>{s}</span>)}</div>
-          </Card>
-
-          <Card>
-            <SectionTitle icon="📄" title="Certificates" subtitle="Only certificates you confirm are stored." action="+ Add" />
-            {profile.certificates.map((c) => <div className="listRow" key={c}><div><strong>{c}</strong></div></div>)}
-          </Card>
-        </div>
-
-        <div className="stack sideStack">
-          <Card>
-            <h3>Profile completion</h3>
-            <div className="completion">
-              <div className="circle"><strong>{completion}%</strong></div>
-              <div className="checklist">
-                {["Personal information","Work experience","Education","Skills","Languages","Certificates"].map((x, i) =>
-                  <div key={x}><span className={i < 5 ? "ok" : "empty"}>{i < 5 ? "✓" : ""}</span>{x}</div>
-                )}
-              </div>
-            </div>
-          </Card>
-
-          <Card className="softCard">
-            <h3>A complete profile helps you</h3>
-            <ul className="benefits">
-              <li>Create a stronger CV</li>
-              <li>Find relevant opportunities</li>
-              <li>Receive better guidance</li>
-              <li>Save time in your job search</li>
-            </ul>
-          </Card>
-
-          <Card>
-            <h3>Need help?</h3>
-            <p>Use guided questions if you are not sure what to include.</p>
-            <button className="secondaryBtn">View guide</button>
-          </Card>
-
-          <button className="primaryBtn" onClick={onNext}>Save and continue →</button>
-        </div>
-      </div>
-    </>
+    <section className="profileAccordion">
+      <button aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((value) => !value)}>
+        <span>{title}</span>
+        <span aria-hidden="true">{open ? "−" : "+"}</span>
+      </button>
+      {open && <div className="profileAccordionPanel" id={panelId}>{children}</div>}
+    </section>
   );
+}
+
+function MobileBottomNav({ active, onNavigate, onMore }) {
+  const items = [
+    { key: "jobs", label: "Jobs", icon: "jobs", action: () => onNavigate("jobs") },
+    { key: "country", label: "Country Guide", icon: "country", action: () => onNavigate("country") },
+    { key: "community", label: "Community", icon: "community", action: () => {} },
+    { key: "profile", label: "Profile", icon: "profile", action: () => onNavigate("profile") },
+    { key: "more", label: "More", icon: "more", action: onMore },
+  ];
+  return (
+    <nav className="mobileBottomNav" aria-label="Primary mobile navigation">
+      {items.map((item) => (
+        <button key={item.key} className={active === item.key ? "active" : ""} aria-current={active === item.key ? "page" : undefined} onClick={item.action}>
+          <ProtoIcon name={item.icon} />
+          <span>{item.label}</span>
+        </button>
+      ))}
+    </nav>
+  );
+}
+
+function ProtoIcon({ name }) {
+  if (name === "menu") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
+  if (name === "jobs") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h16v11H4zM9 8.5V6h6v2.5M4 13h16" /></svg>;
+  if (name === "country") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c3-1.2 5.7-.6 8 1.2v12c-2.3-1.8-5-2.4-8-1.2zM20 5.5c-3-1.2-5.7-.6-8 1.2v12c2.3-1.8 5-2.4 8-1.2z" /></svg>;
+  if (name === "community") return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.3" /><path d="M3.5 19c.4-3.3 2.3-5 5.5-5s5.1 1.7 5.5 5M14 14.5c3.5-.5 5.5 1 6 4.5" /></svg>;
+  if (name === "profile") return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c.5-4.2 2.8-6.3 7-6.3s6.5 2.1 7 6.3" /></svg>;
+  if (name === "document") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.4" /><circle cx="12" cy="12" r="1.4" /><circle cx="19" cy="12" r="1.4" /></svg>;
 }
 
 function CountryScreen({ profile, setProfile, onNext }) {
