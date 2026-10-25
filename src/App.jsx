@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import progressReference from "./assets/progress-88-reference.png";
 import "./App.css";
 
 const jobs = [
@@ -57,7 +58,7 @@ const initialProfile = {
   location: "Jakarta, Indonesia",
   email: "sari.dewi@email.com",
   phone: "+62 812 3456 7890",
-  summary: "Warehouse and production worker with experience in logistics, packing and inventory handling.",
+  summary: "Warehouse & Logistics Worker with experience in warehouse operations, production, packing and inventory handling.",
   experience: [
     {
       id: 1,
@@ -80,12 +81,56 @@ const initialProfile = {
       bullets: ["Supported daily production tasks", "Checked product quality before packing"],
     },
   ],
-  education: [{ school: "SMA Negeri 1 Jakarta", degree: "Senior High School", period: "2014 – 2017" }],
+  education: [
+    { school: "SMA Negeri 1 Jakarta", degree: "Senior High School", place: "Jakarta, Indonesia", period: "2014 – 2017", level: "Secondary education", faculty: "", specialisation: "", graduationYear: "2017" },
+    { school: "Jakarta Training Centre", degree: "Vocational Training — Logistics & Warehouse Operations", place: "Jakarta, Indonesia", period: "2018", level: "Vocational training", faculty: "Logistics", specialisation: "Warehouse Operations", graduationYear: "2018" },
+    { school: "Indonesian Logistics Academy", degree: "Forklift & Workplace Safety Training", place: "Jakarta, Indonesia", period: "2021", level: "Professional training", faculty: "Logistics", specialisation: "Forklift & Workplace Safety", graduationYear: "2021" },
+    { school: "University of Indonesia", degree: "Bachelor’s Degree — Graphic Design", place: "Jakarta, Indonesia", period: "2017 – 2021", level: "Bachelor’s degree", faculty: "Faculty of Art and Design", specialisation: "Graphic Design", graduationYear: "2021" },
+  ],
   skills: ["Warehouse Operations", "Packing", "Inventory Management", "Teamwork"],
   languages: ["Indonesian — Native", "English — Basic (A2)"],
   certificates: ["Forklift Licence — issued Mar 2021"],
   targetCountry: "Finland",
 };
+
+const mockAiSuggestions = [
+  "Add your English proficiency level.",
+  "Add a short description to your most recent work experience.",
+  "Add relevant certificates if you have them.",
+  "Add your availability or start date.",
+];
+
+const suggestedSkills = [
+  "Warehouse Operations",
+  "Inventory Management",
+  "Packing",
+  "Forklift Operation",
+  "Order Picking",
+  "Stock Control",
+  "Logistics",
+  "Quality Control",
+  "Shift Work",
+  "Workplace Safety",
+  "Teamwork",
+  "Production Operations",
+];
+
+const monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+
+function companyDuration(positions) {
+  const monthCount = positions.reduce((total, { period }) => {
+    const matches = [...period.matchAll(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{4})/g)];
+    if (matches.length !== 2) return total;
+
+    const start = Number(matches[0][2]) * 12 + monthNumbers[matches[0][1]];
+    const end = Number(matches[1][2]) * 12 + monthNumbers[matches[1][1]];
+    return total + Math.max(0, end - start + 1);
+  }, 0);
+
+  const years = Math.floor(monthCount / 12);
+  const months = monthCount % 12;
+  return [years && `${years} ${years === 1 ? "year" : "years"}`, months && `${months} ${months === 1 ? "month" : "months"}`].filter(Boolean).join(" ");
+}
 
 const countrySuggestionsSeed = [
   {
@@ -104,7 +149,7 @@ const countrySuggestionsSeed = [
     status: "pending",
     type: "wording",
     suggested:
-      "Warehouse and production worker with 6+ years of experience in packing, inventory handling and quality checks.",
+      "Warehouse & Logistics Worker with experience in warehouse operations, production, packing and inventory handling.",
   },
   {
     id: "language",
@@ -182,7 +227,7 @@ function App() {
   if (screen === "profile") {
     return (
       <div className="app profileMode">
-        <ProfileScreen profile={profile} completion={completion} onNavigate={go} />
+        <ProfileScreen profile={profile} setProfile={setProfile} completion={completion} onNavigate={go} />
       </div>
     );
   }
@@ -354,17 +399,34 @@ function Card({ children, className = "" }) {
   return <section className={`card ${className}`}>{children}</section>;
 }
 
-function ProfileScreen({ profile, completion, onNavigate }) {
+function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
   const [activeTab, setActiveTab] = useState("professional");
   const [profileHelpOpen, setProfileHelpOpen] = useState(false);
   const [nextStepOpen, setNextStepOpen] = useState(false);
+  const [activeAdviceIndex, setActiveAdviceIndex] = useState(0);
+  const [adviceStatuses, setAdviceStatuses] = useState({});
+  const [allAdviceOpen, setAllAdviceOpen] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [photoManagementOpen, setPhotoManagementOpen] = useState(false);
   const [personalInformationOpen, setPersonalInformationOpen] = useState(false);
+  const [editingExperience, setEditingExperience] = useState(null);
+  const [editingEducation, setEditingEducation] = useState(null);
+  const [allEducationOpen, setAllEducationOpen] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState({ workExperience: false, education: false, skills: false });
+  const profileScrollPosition = useRef(0);
   const [activeSheet, setActiveSheet] = useState(null);
   const [photoRemoved, setPhotoRemoved] = useState(false);
   const [photoVisibility, setPhotoVisibility] = useState("community");
   const [jobStatus, setJobStatus] = useState("I am not looking for a job");
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [manualSkill, setManualSkill] = useState("");
+  const experienceCompanies = Object.values(profile.experience.reduce((groups, experience) => {
+    const key = `${experience.company}-${experience.place}`;
+    if (!groups[key]) groups[key] = { company: experience.company, place: experience.place, positions: [] };
+    groups[key].positions.push(experience);
+    return groups;
+  }, {}));
   const [personalDetails, setPersonalDetails] = useState(() => {
     const [name, ...surname] = profile.fullName.split(" ");
     return {
@@ -386,12 +448,110 @@ function ProfileScreen({ profile, completion, onNavigate }) {
     "I am already starting my new job",
   ];
 
+  const rememberProfileScroll = () => {
+    profileScrollPosition.current = window.scrollY;
+  };
+  const restoreProfileScroll = () => {
+    requestAnimationFrame(() => window.scrollTo(0, profileScrollPosition.current));
+  };
+  const toggleAccordion = (section) => {
+    setAccordionOpen((current) => ({ ...current, [section]: !current[section] }));
+  };
+  const openPersonalInformation = () => {
+    rememberProfileScroll();
+    setPersonalInformationOpen(true);
+  };
+  const closePersonalInformation = () => {
+    setPersonalInformationOpen(false);
+    restoreProfileScroll();
+  };
+  const openExperienceEditor = (experience) => {
+    rememberProfileScroll();
+    setEditingExperience(experience);
+  };
+  const closeExperienceEditor = () => {
+    setEditingExperience(null);
+    restoreProfileScroll();
+  };
+  const openEducationEditor = (education) => {
+    rememberProfileScroll();
+    setEditingEducation(education);
+  };
+  const closeEducationEditor = () => {
+    setEditingEducation(null);
+    if (!allEducationOpen) restoreProfileScroll();
+  };
+  const openAllEducation = () => {
+    rememberProfileScroll();
+    setAllEducationOpen(true);
+  };
+  const closeAllEducation = () => {
+    setAllEducationOpen(false);
+    restoreProfileScroll();
+  };
+  const openPhotoManagement = () => {
+    rememberProfileScroll();
+    setPhotoManagementOpen(true);
+  };
+  const closePhotoManagement = () => {
+    setPhotoManagementOpen(false);
+    setActiveSheet(null);
+    restoreProfileScroll();
+  };
+  const openAddSkillSheet = () => {
+    setSelectedSkills([]);
+    setManualSkill("");
+    setActiveSheet("add-skill");
+  };
+  const toggleSuggestedSkill = (skill) => {
+    setSelectedSkills((current) => current.includes(skill)
+      ? current.filter((item) => item !== skill)
+      : [...current, skill]);
+  };
+  const normalizeSkill = (skill) => skill.trim().toLocaleLowerCase();
+  const pendingSkills = [...selectedSkills, manualSkill.trim()]
+    .filter(Boolean)
+    .filter((skill, index, skills) => skills.findIndex((item) => normalizeSkill(item) === normalizeSkill(skill)) === index);
+  const skillsToAdd = pendingSkills.filter((skill) => !profile.skills.some((existing) => normalizeSkill(existing) === normalizeSkill(skill)));
+  const addSelectedSkills = () => {
+    if (skillsToAdd.length === 0) return;
+    setProfile((current) => ({ ...current, skills: [...current.skills, ...skillsToAdd] }));
+    setActiveSheet(null);
+  };
+  const removeSelectedSkill = (skill) => {
+    setSelectedSkills((current) => current.filter((item) => item !== skill));
+  };
+  const removeProfileSkill = (skill) => {
+    setProfile((current) => ({
+      ...current,
+      skills: current.skills.filter((existing) => normalizeSkill(existing) !== normalizeSkill(skill)),
+    }));
+  };
+
   if (personalInformationOpen) {
     return (
       <PersonalInformationScreen
         details={personalDetails}
-        onBack={() => setPersonalInformationOpen(false)}
-        onSave={(details) => { setPersonalDetails(details); setPersonalInformationOpen(false); }}
+        onBack={closePersonalInformation}
+        onSave={(details) => { setPersonalDetails(details); closePersonalInformation(); }}
+      />
+    );
+  }
+
+  if (editingExperience) {
+    return <ExperienceDetailScreen experience={editingExperience} onBack={closeExperienceEditor} />;
+  }
+
+  if (editingEducation) {
+    return <EducationDetailScreen education={editingEducation} onBack={closeEducationEditor} />;
+  }
+
+  if (allEducationOpen) {
+    return (
+      <EducationListScreen
+        education={profile.education}
+        onBack={closeAllEducation}
+        onEdit={setEditingEducation}
       />
     );
   }
@@ -402,7 +562,7 @@ function ProfileScreen({ profile, completion, onNavigate }) {
         photoRemoved={photoRemoved}
         photoVisibility={photoVisibility}
         activeSheet={activeSheet}
-        onBack={() => { setPhotoManagementOpen(false); setActiveSheet(null); }}
+        onBack={closePhotoManagement}
         onVisibilityChange={setPhotoVisibility}
         onOpenSheet={setActiveSheet}
         onCloseSheet={() => setActiveSheet(null)}
@@ -437,7 +597,7 @@ function ProfileScreen({ profile, completion, onNavigate }) {
           <div className={`profilePhoto ${photoRemoved ? "removed" : ""}`} aria-label={photoRemoved ? "No profile photo" : "Profile photo"}>
             {photoRemoved ? <ProtoIcon name="profile" /> : "SD"}
           </div>
-          <button className="photoEditButton" aria-label="Manage profile photo" onClick={() => setPhotoManagementOpen(true)}>
+          <button className="photoEditButton" aria-label="Manage profile photo" onClick={openPhotoManagement}>
             <ProtoIcon name="pencil" />
           </button>
         </div>
@@ -446,7 +606,7 @@ function ProfileScreen({ profile, completion, onNavigate }) {
         <button
           className="profileDisclosureRow"
           aria-haspopup="dialog"
-          onClick={() => setPersonalInformationOpen(true)}
+          onClick={openPersonalInformation}
         >
           <span>Personal information</span>
           <ProtoIcon name="chevron-down" />
@@ -494,49 +654,156 @@ function ProfileScreen({ profile, completion, onNavigate }) {
             <p className="profileHelpText">Your professional profile is the reusable source for your experience, education and skills. You control what is included in each CV.</p>
           )}
 
-          <button
-            className="progressNextStep"
-            aria-expanded={nextStepOpen}
-            onClick={() => setNextStepOpen((open) => !open)}
-          >
-            <span className="progressSummary">
-              <span><strong>{completion}%</strong><small>Profile complete</small></span>
-              <span className="progressTrack"><span style={{ width: `${completion}%` }} /></span>
-            </span>
-            <span className="nextStepSummary">
+          <div className="profileActionCards">
+            <div className="profileActionCard profileCompletionCard">
+              <CompletionIndicator completion={completion} />
+              <small>Profile complete</small>
+            </div>
+            <button
+              className="profileActionCard profileAiCard"
+              aria-expanded={nextStepOpen}
+              onClick={() => setNextStepOpen((open) => !open)}
+            >
               <small>Next step</small>
-              <strong>Add details about your English proficiency</strong>
-            </span>
-            <span className="accordionChevron" aria-hidden="true">{nextStepOpen ? "−" : "+"}</span>
-          </button>
+              <strong>AI hint</strong>
+              <span className="aiHintChevron" aria-hidden="true"><ProtoIcon name="chevron-down" /></span>
+            </button>
+            <button
+              className="profileActionCard profileResumeCard"
+              aria-expanded={resumeOpen}
+              onClick={() => setResumeOpen((open) => !open)}
+            >
+              <strong>Create a resume</strong>
+              <span className="resumePlus" aria-hidden="true">+</span>
+            </button>
+          </div>
           {nextStepOpen && (
-            <div className="nextStepExplanation">Specific examples of how you use English at work help employers understand your communication readiness beyond a level label. This is a prototype recommendation only.</div>
+            <div className="nextStepExplanation" aria-live="polite">
+              {!allAdviceOpen && (
+                <>
+                  <p className="aiAdviceText"><strong>{mockAiSuggestions[activeAdviceIndex]}</strong></p>
+                  {adviceStatuses[activeAdviceIndex] ? (
+                    <p className="aiAdviceAcknowledgement">
+                      {adviceStatuses[activeAdviceIndex] === "accepted" ? "Suggestion marked as complete." : "Suggestion ignored."}
+                    </p>
+                  ) : (
+                    <div className="aiAdviceActions">
+                      <button className="aiAdviceAction aiAdviceAccept" type="button" onClick={() => setAdviceStatuses((statuses) => ({ ...statuses, [activeAdviceIndex]: "accepted" }))}>OK</button>
+                      <button className="aiAdviceAction aiAdviceIgnore" type="button" onClick={() => setAdviceStatuses((statuses) => ({ ...statuses, [activeAdviceIndex]: "ignored" }))}>Ignore</button>
+                    </div>
+                  )}
+                </>
+              )}
+              <button
+                className="moreAdviceButton"
+                type="button"
+                aria-expanded={allAdviceOpen}
+                onClick={() => setAllAdviceOpen((open) => !open)}
+              >
+                {allAdviceOpen ? "Hide all advice" : "View all advice"}
+              </button>
+              {allAdviceOpen && (
+                <ul className="aiAdviceList">
+                  {mockAiSuggestions.map((suggestion, index) => {
+                    const status = adviceStatuses[index];
+                    const isActive = activeAdviceIndex === index;
+
+                    return (
+                      <li className={isActive ? "active" : ""} key={suggestion}>
+                        <button
+                          className="aiAdviceRow"
+                          type="button"
+                          aria-expanded={isActive}
+                          onClick={() => setActiveAdviceIndex(index)}
+                        >
+                          <strong>{suggestion}</strong>
+                          {status && <small>{status === "accepted" ? "Accepted" : "Ignored"}</small>}
+                        </button>
+                        {isActive && (
+                          <div className="aiAdviceExpanded">
+                            <div className="aiAdviceActions">
+                              <button className="aiAdviceAction aiAdviceAccept" type="button" onClick={() => setAdviceStatuses((statuses) => ({ ...statuses, [index]: "accepted" }))}>OK</button>
+                              <button className="aiAdviceAction aiAdviceIgnore" type="button" onClick={() => setAdviceStatuses((statuses) => ({ ...statuses, [index]: "ignored" }))}>Ignore</button>
+                            </div>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          )}
+          {resumeOpen && (
+            <div className="resumeCreationPlaceholder">Resume creation is a mock action for this prototype.</div>
           )}
 
+          <p className="myResumeLabel">My resume</p>
           <div className="profileAccordions">
-            <ProfileAccordion title="Work Experience" defaultOpen>
-              {profile.experience.map((exp) => (
-                <article className="profileRecord" key={exp.id}>
-                  <strong>{exp.role}</strong>
-                  <span>{exp.company} · {exp.place}</span>
-                  <small>{exp.period}</small>
-                  <ul>{exp.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
-                </article>
+            <ProfileAccordion title="Work Experience" open={accordionOpen.workExperience} onToggle={() => toggleAccordion("workExperience")}>
+              <p className="workExperienceSummary"><span>Work experience:</span> <strong>15 years 4 months</strong></p>
+              {experienceCompanies.map((company) => (
+                <section className="companyExperience" key={`${company.company}-${company.place}`}>
+                  <div className="companyExperienceHeader">
+                    <span className="companyLogoPlaceholder" aria-label="Company logo upload placeholder">logo</span>
+                    <div>
+                      <strong>{company.company}</strong>
+                      <small>{companyDuration(company.positions)}</small>
+                    </div>
+                  </div>
+                  <div className="companyPositions">
+                    {company.positions.map((position) => (
+                      <article
+                        className="profileRecord workExperienceRecord"
+                        key={position.id}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => openExperienceEditor(position)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                          openExperienceEditor(position);
+                          }
+                        }}
+                      >
+                        <div className="workExperiencePositionHeader">
+                          <div>
+                            <strong>{position.role}</strong>
+                            <small>{position.period}</small>
+                          </div>
+                          <span className="workExperienceEditChevron" aria-hidden="true"><ProtoIcon name="chevron-right" /></span>
+                        </div>
+                        <ul>{position.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
+                      </article>
+                    ))}
+                  </div>
+                </section>
               ))}
             </ProfileAccordion>
 
-            <ProfileAccordion title="Education">
-              {profile.education.map((item) => (
-                <article className="profileRecord" key={`${item.school}-${item.period}`}>
-                  <strong>{item.degree}</strong>
-                  <span>{item.school}</span>
-                  <small>{item.period}</small>
-                </article>
+            <ProfileAccordion title="Education" open={accordionOpen.education} onToggle={() => toggleAccordion("education")}>
+              {profile.education.slice(0, 3).map((item) => (
+                <EducationRecord key={`${item.school}-${item.period}`} item={item} onEdit={openEducationEditor} />
               ))}
+              {profile.education.length > 3 && (
+                <button className="secondarySectionAction viewAllEducationButton" type="button" onClick={openAllEducation}>
+                  View all
+                </button>
+              )}
             </ProfileAccordion>
 
-            <ProfileAccordion title="Skills">
-              <div className="neutralChips">{profile.skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
+            <ProfileAccordion title="Skills" open={accordionOpen.skills} onToggle={() => toggleAccordion("skills")}>
+              <div className="neutralChips">
+                {profile.skills.map((skill) => (
+                  <span className="profileSkillChip" key={skill}>
+                    <span>{skill}</span>
+                    <button type="button" aria-label={`Remove ${skill}`} onClick={() => removeProfileSkill(skill)}><ProtoIcon name="close" /></button>
+                  </span>
+                ))}
+              </div>
+              <button className="secondarySectionAction" type="button" onClick={openAddSkillSheet}>
+                Add
+              </button>
             </ProfileAccordion>
           </div>
         </main>
@@ -571,6 +838,54 @@ function ProfileScreen({ profile, completion, onNavigate }) {
           </div>
         </BottomSheet>
       )}
+      {activeSheet === "add-skill" && (
+        <BottomSheet title="Add a skill" onClose={() => setActiveSheet(null)} showClose large>
+          <div className="skillAddMock">
+            <input aria-label="Skill name" placeholder="Type a skill" value={manualSkill} onChange={(event) => setManualSkill(event.target.value)} />
+            {selectedSkills.length > 0 && (
+              <section className="selectedSkills" aria-label="Selected skills">
+                <h3>Selected skills</h3>
+                <div className="selectedSkillList">
+                  {selectedSkills.map((skill) => (
+                    <span className="selectedSkillChip" key={skill}>
+                      <span>{skill}</span>
+                      <button type="button" aria-label={`Remove ${skill}`} onClick={() => removeSelectedSkill(skill)}><ProtoIcon name="close" /></button>
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+            <section className="skillSuggestions" aria-label="Suggested skills">
+              <h3>Suggested skills</h3>
+              <div className="skillSuggestionList">
+                {suggestedSkills
+                  .filter((skill) => !profile.skills.some((existing) => normalizeSkill(existing) === normalizeSkill(skill)))
+                  .filter((skill) => !selectedSkills.includes(skill))
+                  .map((skill) => (
+                    <button
+                      key={skill}
+                      className="skillSuggestionChip"
+                      type="button"
+                      aria-pressed="false"
+                      onClick={() => toggleSuggestedSkill(skill)}
+                    >
+                      {skill}
+                    </button>
+                  ))}
+              </div>
+            </section>
+          </div>
+          <button className="skillAddButton" type="button" disabled={skillsToAdd.length === 0} onClick={addSelectedSkills}>Add</button>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
+function CompletionIndicator({ completion }) {
+  return (
+    <div className="completionIndicator" data-current-completion={completion}>
+      <img src={progressReference} alt="88% profile complete" />
     </div>
   );
 }
@@ -624,6 +939,296 @@ function PersonalInformationScreen({ details, onBack, onSave }) {
   );
 }
 
+function ExperienceDetailScreen({ experience, onBack }) {
+  const [startDate = "", endDate = ""] = experience.period.split(" – ");
+  const [startMonth = "", startYear = ""] = startDate.split(" ");
+  const [endMonth = "", endYear = ""] = endDate.split(" ");
+  const [draft, setDraft] = useState({
+    company: experience.company,
+    position: experience.role,
+    city: experience.place,
+    website: "",
+    activity: "",
+    responsibilities: experience.bullets.join("\n"),
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    present: false,
+    resumeSelected: true,
+  });
+  const [activeEditor, setActiveEditor] = useState(null);
+  const [recommendationOffset, setRecommendationOffset] = useState(0);
+  const setField = (field, value) => setDraft((current) => ({ ...current, [field]: value }));
+  const editorConfig = {
+    company: { title: "Company name", field: "company", label: "Company name" },
+    position: { title: "Position or profession", field: "position", label: "Position or profession" },
+    city: { title: "City or region", field: "city", label: "City or region" },
+    website: { title: "Company website", field: "website", label: "Website URL" },
+    activity: { title: "Field of activity", field: "activity", label: "Field of activity" },
+    responsibilities: { title: "Responsibilities and achievements", field: "responsibilities", label: "Responsibilities and achievements", multiline: true },
+  };
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const responsibilityRecommendations = [
+    "Include how you maintained inventory accuracy and stock control.",
+    "Mention warehouse equipment or safety procedures you used.",
+    "Add a measurable result, such as orders processed per shift.",
+    "Describe how you coordinated with the packing or delivery team.",
+    "Highlight quality checks completed before dispatch.",
+    "Mention any training or onboarding you supported.",
+  ];
+  const visibleRecommendations = Array.from({ length: 3 }, (_, index) => responsibilityRecommendations[(recommendationOffset + index) % responsibilityRecommendations.length]);
+  const editor = editorConfig[activeEditor];
+
+  return (
+    <div className="personalInformationScreen experienceDetailScreen">
+      <header className="personalInfoScreenBar">
+        <button aria-label="Back to work experience" onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <h1>Edit experience</h1>
+        <span aria-hidden="true" />
+      </header>
+      <main className="personalInfoForm experienceEditForm">
+        <ExperienceEditBox label="Company" value={draft.company} onClick={() => setActiveEditor("company")} />
+        <ExperienceEditBox label="Position or profession" value={draft.position} onClick={() => setActiveEditor("position")} />
+        <ExperienceEditBox label="City or region" value={draft.city} onClick={() => setActiveEditor("city")} />
+        <ExperienceEditBox label="Company website" value={draft.website} emptyText="" onClick={() => setActiveEditor("website")} />
+        <ExperienceEditBox label="Field of activity" value={draft.activity} emptyText="" onClick={() => setActiveEditor("activity")} />
+        <ExperienceEditBox label="Responsibilities and achievements" value={draft.responsibilities} onClick={() => setActiveEditor("responsibilities")} multiline />
+
+        <section className="experienceDateSection">
+          <p className="experienceDateSectionLabel">Start date</p>
+          <div className="experienceDateGrid">
+            <button className="experienceDateBox" type="button" onClick={() => setActiveEditor("startMonth")}>
+              <span>Month</span><strong>{draft.startMonth || "Select"}</strong><ProtoIcon name="chevron-down" />
+            </button>
+            <label className="experienceDateBox experienceYearBox"><span>Year</span><input inputMode="numeric" value={draft.startYear} onChange={(event) => setField("startYear", event.target.value)} /></label>
+          </div>
+        </section>
+
+        <section className="experienceDateSection">
+          <div className="experienceEndDateHeading">
+            <p className="experienceDateSectionLabel">End date</p>
+            <label className="presentTimeControl"><span>Present time</span><input type="checkbox" checked={draft.present} onChange={(event) => setField("present", event.target.checked)} /></label>
+          </div>
+          <div className="experienceDateGrid">
+            <button className="experienceDateBox" type="button" disabled={draft.present} onClick={() => setActiveEditor("endMonth")}>
+              <span>Month</span><strong>{draft.endMonth || "Select"}</strong><ProtoIcon name="chevron-down" />
+            </button>
+            <label className="experienceDateBox experienceYearBox"><span>Year</span><input inputMode="numeric" disabled={draft.present} value={draft.endYear} onChange={(event) => setField("endYear", event.target.value)} /></label>
+          </div>
+        </section>
+
+        <section className="experienceResumeSection">
+          <p className="experienceDateSectionLabel">Include in resumes</p>
+          <label className="experienceResumeCard">
+            <span className="experienceResumeAvatar" aria-hidden="true">SD</span>
+            <span className="experienceResumeDetails"><strong>Warehouse & Logistics Worker</strong><small>Professional resume</small></span>
+            <input type="checkbox" checked={draft.resumeSelected} onChange={(event) => setField("resumeSelected", event.target.checked)} />
+          </label>
+        </section>
+        <button className="personalSaveButton" onClick={onBack}>Save</button>
+      </main>
+
+      {activeEditor === "responsibilities" && (
+        <BottomSheet title="Responsibilities and achievements" onClose={() => setActiveEditor(null)} showClose large>
+          <div className="responsibilitySheetContent">
+            <textarea
+              className="responsibilityEditor"
+              value={draft.responsibilities}
+              onChange={(event) => setField("responsibilities", event.target.value)}
+              aria-label="Responsibilities and achievements"
+            />
+            <section className="responsibilityRecommendations">
+              <div className="responsibilityRecommendationsHeader">
+                <strong>Recommendations for your profession</strong>
+                <button type="button" aria-label="Refresh recommendations" onClick={() => setRecommendationOffset((offset) => (offset + 3) % responsibilityRecommendations.length)}><ProtoIcon name="refresh" /></button>
+              </div>
+              <div className="responsibilityRecommendationList">
+                {visibleRecommendations.map((recommendation) => (
+                  <div className="responsibilityRecommendation" key={recommendation}>
+                    <span>{recommendation}</span>
+                    <button type="button" aria-label={`Add recommendation: ${recommendation}`} onClick={() => setField("responsibilities", draft.responsibilities ? `${draft.responsibilities}\n${recommendation}` : recommendation)}><ProtoIcon name="plus" /></button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+          <button className="responsibilityAddButton" type="button" onClick={() => setActiveEditor(null)}>Add</button>
+        </BottomSheet>
+      )}
+      {editor && activeEditor !== "responsibilities" && (
+        <BottomSheet title={editor.title} onClose={() => setActiveEditor(null)} showClose large>
+          <label className="experienceSheetField">
+            <span>{editor.label}</span>
+            {editor.multiline ? (
+              <textarea value={draft[editor.field]} onChange={(event) => setField(editor.field, event.target.value)} rows={5} />
+            ) : (
+              <input autoFocus value={draft[editor.field]} onChange={(event) => setField(editor.field, event.target.value)} />
+            )}
+          </label>
+          {activeEditor === "company" && (
+            <button className="companyLogoUpload" type="button"><span>logo</span><strong>Upload company logo</strong><ProtoIcon name="image" /></button>
+          )}
+        </BottomSheet>
+      )}
+      {(activeEditor === "startMonth" || activeEditor === "endMonth") && (
+        <BottomSheet title="Select month" onClose={() => setActiveEditor(null)} showClose large>
+          <div className="experienceMonthList">
+            {months.map((month) => (
+              <button key={month} className="sheetSelectionRow" type="button" onClick={() => { setField(activeEditor, month.slice(0, 3)); setActiveEditor(null); }}>
+                <span>{month}</span>
+              </button>
+            ))}
+          </div>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
+function ExperienceEditBox({ label, value, onClick, multiline = false, emptyText = "", showChevron = true }) {
+  const displayValue = value || emptyText;
+
+  return (
+    <button className={`experienceEditBox ${multiline ? "multiline" : ""} ${showChevron ? "" : "noChevron"}`} type="button" onClick={onClick}>
+      <span>{label}</span>
+      {displayValue && <strong className={value ? "" : "empty"}>{displayValue}</strong>}
+      {showChevron && <ProtoIcon name="chevron-right" />}
+    </button>
+  );
+}
+
+function EducationRecord({ item, onEdit }) {
+  return (
+    <article
+      className="profileRecord educationRecord"
+      role="button"
+      tabIndex={0}
+      onClick={() => onEdit(item)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onEdit(item);
+        }
+      }}
+    >
+      <div className="educationRecordDetails">
+        <strong>{item.degree}</strong>
+        <span>{item.school}</span>
+        {item.place && <span className="educationLocation">{item.place}</span>}
+        <small>{item.period}</small>
+      </div>
+      <span className="workExperienceEditChevron" aria-hidden="true"><ProtoIcon name="chevron-right" /></span>
+    </article>
+  );
+}
+
+function EducationListScreen({ education, onBack, onEdit }) {
+  return (
+    <div className="personalInformationScreen educationListScreen">
+      <header className="personalInfoScreenBar">
+        <button aria-label="Back to profile" onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <h1>Education</h1>
+        <span aria-hidden="true" />
+      </header>
+      <main className="personalInfoForm educationListContent">
+        {education.map((item) => (
+          <EducationRecord key={`${item.school}-${item.period}`} item={item} onEdit={onEdit} />
+        ))}
+      </main>
+    </div>
+  );
+}
+
+function EducationDetailScreen({ education, onBack }) {
+  const [draft, setDraft] = useState({
+    level: education.level || "Secondary education",
+    name: education.school,
+    faculty: education.faculty || "",
+    specialisation: education.specialisation || "",
+    graduationYear: education.graduationYear || education.period.split(" – ").at(-1),
+    resumeSelected: true,
+  });
+  const [activeEditor, setActiveEditor] = useState(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const setField = (field, value) => setDraft((current) => ({ ...current, [field]: value }));
+  const editorConfig = {
+    name: { title: "Name", label: "Educational institution name" },
+    faculty: { title: "Faculty", label: "Faculty" },
+    specialisation: { title: "Specialisation", label: "Specialisation" },
+    graduationYear: { title: "Graduation year", label: "Graduation year" },
+  };
+  const educationLevels = ["Secondary education", "Vocational training", "Bachelor’s degree", "Master’s degree", "Doctoral degree", "Professional training"];
+  const editor = editorConfig[activeEditor];
+
+  return (
+    <div className="personalInformationScreen educationDetailScreen">
+      <header className="personalInfoScreenBar">
+        <button aria-label="Back to education" onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <h1>Educational institution</h1>
+        <button className="educationDeleteButton" aria-label="Delete education entry" onClick={() => setDeleteOpen(true)}><ProtoIcon name="trash-compact" /></button>
+      </header>
+      <main className="personalInfoForm educationEditForm">
+        <section className="educationLevelSection">
+          <p className="educationSectionLabel">Education level</p>
+          <button className="educationLevelBox" type="button" onClick={() => setActiveEditor("level")}>
+            <strong>{draft.level}</strong><ProtoIcon name="chevron-down" />
+          </button>
+        </section>
+
+        <section className="educationInstitutionSection">
+          <p className="educationSectionLabel">Educational institution</p>
+          <ExperienceEditBox label="Name" value={draft.name} onClick={() => setActiveEditor("name")} />
+          <ExperienceEditBox label="Faculty" value={draft.faculty} onClick={() => setActiveEditor("faculty")} />
+          <ExperienceEditBox label="Specialisation" value={draft.specialisation} onClick={() => setActiveEditor("specialisation")} />
+          <div className="educationGraduationField">
+            <ExperienceEditBox label="Graduation year" value={draft.graduationYear} onClick={() => setActiveEditor("graduationYear")} />
+            <small>If you are still studying, specify your expected graduation year</small>
+          </div>
+        </section>
+
+        <section className="educationResumeSection">
+          <p className="educationSectionLabel">Include in resumes</p>
+          <label className="experienceResumeCard">
+            <span className="experienceResumeAvatar" aria-hidden="true">SD</span>
+            <span className="experienceResumeDetails"><strong>Warehouse & Logistics Worker</strong><small>Professional resume</small></span>
+            <input type="checkbox" checked={draft.resumeSelected} onChange={(event) => setField("resumeSelected", event.target.checked)} />
+          </label>
+        </section>
+        <button className="personalSaveButton" onClick={onBack}>Save</button>
+      </main>
+
+      {activeEditor === "level" && (
+        <BottomSheet title="Education level" onClose={() => setActiveEditor(null)} showClose large>
+          <div className="educationLevelList">
+            {educationLevels.map((level) => (
+              <button key={level} className="sheetSelectionRow" type="button" onClick={() => { setField("level", level); setActiveEditor(null); }}>
+                <span>{level}</span><span className={`radioIndicator ${draft.level === level ? "selected" : ""}`} aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        </BottomSheet>
+      )}
+      {editor && (
+        <BottomSheet title={editor.title} onClose={() => setActiveEditor(null)} showClose large>
+          <label className="experienceSheetField">
+            <span>{editor.label}</span>
+            <input autoFocus inputMode={activeEditor === "graduationYear" ? "numeric" : undefined} value={draft[activeEditor]} onChange={(event) => setField(activeEditor, event.target.value)} />
+          </label>
+        </BottomSheet>
+      )}
+      {deleteOpen && (
+        <BottomSheet title="Delete this education entry?" onClose={() => setDeleteOpen(false)} showClose>
+          <div className="educationDeleteActions">
+            <button className="educationDeleteConfirm" type="button" onClick={onBack}>Delete</button>
+            <button type="button" onClick={() => setDeleteOpen(false)}>Cancel</button>
+          </div>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
 function PhotoManagementScreen({ photoRemoved, photoVisibility, activeSheet, onBack, onVisibilityChange, onOpenSheet, onCloseSheet, onDelete, onAddPhoto }) {
   return (
     <div className="photoManagementScreen">
@@ -672,12 +1277,13 @@ function PhotoManagementScreen({ photoRemoved, photoVisibility, activeSheet, onB
   );
 }
 
-function BottomSheet({ title, children, onClose }) {
+function BottomSheet({ title, children, onClose, showClose = false, large = false }) {
   return (
     <div className="bottomSheetOverlay" role="presentation">
       <button className="bottomSheetBackdrop" aria-label="Close sheet" onClick={onClose} />
-      <section className="bottomSheet" role="dialog" aria-modal="true" aria-label={title || "Options"}>
+      <section className={`bottomSheet ${large ? "large" : ""}`} role="dialog" aria-modal="true" aria-label={title || "Options"}>
         <div className="sheetHandle" />
+        {showClose && <button className="sheetCloseButton" aria-label="Close sheet" onClick={onClose}><ProtoIcon name="close" /></button>}
         {title && <h2>{title}</h2>}
         {children}
       </section>
@@ -685,12 +1291,11 @@ function BottomSheet({ title, children, onClose }) {
   );
 }
 
-function ProfileAccordion({ title, defaultOpen = false, children }) {
-  const [open, setOpen] = useState(defaultOpen);
+function ProfileAccordion({ title, open, onToggle, children }) {
   const panelId = `profile-section-${title.toLowerCase().replaceAll(" ", "-")}`;
   return (
     <section className="profileAccordion">
-      <button aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((value) => !value)}>
+      <button aria-expanded={open} aria-controls={panelId} onClick={onToggle}>
         <span>{title}</span>
         <span aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
@@ -722,11 +1327,15 @@ function MobileBottomNav({ active, onNavigate, onMore }) {
 function ProtoIcon({ name }) {
   if (name === "menu") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
   if (name === "arrow-left") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>;
+  if (name === "close") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>;
+  if (name === "refresh") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.8-4M4 13a8 8 0 0 0 14.8 4M5 4v4h4m6 12v-4h4" /></svg>;
   if (name === "chevron-down") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 9 7 7 7-7" /></svg>;
+  if (name === "chevron-right") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>;
   if (name === "pencil") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19 8.5 15.5 5zM13.8 6.7l3.5 3.5" /></svg>;
   if (name === "plus") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>;
   if (name === "calendar") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1.5" /><path d="M8 3v4M16 3v4M4 10h16" /></svg>;
   if (name === "download") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 19h14" /></svg>;
+  if (name === "trash-compact") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7h8m-6-2h4m-7 2 1 12h8l1-12M10.5 11v4.5M13.5 11v4.5" /></svg>;
   if (name === "trash") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5M14 11v5" /></svg>;
   if (name === "image") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="1" /><circle cx="9" cy="10" r="1.5" /><path d="m5 17 4.5-4 3 2.5 2.5-2 4 3.5" /></svg>;
   if (name === "camera") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.3-2h7.4L17 8h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>;
