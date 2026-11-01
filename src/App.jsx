@@ -115,6 +115,111 @@ const suggestedSkills = [
   "Production Operations",
 ];
 
+const initialAdditionalEducationEntries = [
+  { id: "forklift-safety", name: "Forklift Safety Course", organisation: "Indonesian Logistics Academy", specialisation: "Workplace safety", graduationYear: "2022", resumeSelected: true },
+  { id: "warehouse-training", name: "Warehouse Operations Training", organisation: "Jakarta Training Centre", specialisation: "Logistics & warehouse operations", graduationYear: "2021", resumeSelected: true },
+  { id: "first-aid", name: "First Aid Certificate", organisation: "Red Cross Indonesia", specialisation: "First aid", graduationYear: "2023", resumeSelected: true },
+];
+
+const regionalCertificateRecommendations = [
+  {
+    id: "occupational-safety-card",
+    name: "Occupational Safety Card",
+    status: "Recommended",
+    organisation: "Finland workplace safety training",
+    specialisation: "Warehouse and production safety",
+    description: "Recommended for warehouse and production work in Finland.",
+    learnMore: "It is commonly requested for roles where workplace safety training is expected. Check the employer’s requirements and the course provider before enrolling.",
+  },
+  {
+    id: "hygiene-passport",
+    name: "Hygiene Passport",
+    status: "Commonly requested",
+    organisation: "Finland food hygiene training",
+    specialisation: "Food hygiene",
+    description: "Useful for warehouse roles that involve food handling or food production in Finland.",
+    learnMore: "It may be useful when the role includes food handling. Check the job description and employer guidance before applying.",
+  },
+  {
+    id: "local-forklift-certification",
+    name: "Local forklift certification",
+    status: "Required for some jobs",
+    organisation: "Local forklift training provider",
+    specialisation: "Forklift operation",
+    description: "Some Finnish warehouse employers may ask for locally recognised forklift training.",
+    learnMore: "Requirements differ between employers and equipment types. Confirm which training is accepted before arranging a course.",
+  },
+  {
+    id: "emergency-first-aid-training",
+    name: "Emergency first aid training",
+    status: "Recommended",
+    organisation: "Local first aid training provider",
+    specialisation: "Workplace first aid",
+    description: "A useful additional certificate for warehouse and production environments.",
+    learnMore: "This can support applications where employers value workplace safety awareness. Check whether a current local certificate is preferred.",
+  },
+];
+
+const finnishMunicipalities = [
+  "Akaa", "Alajärvi", "Alavieska", "Alavus", "Asikkala", "Askola", "Aura", "Brändö", "Eckerö", "Enonkoski", "Enontekiö", "Espoo", "Eura", "Eurajoki", "Evijärvi", "Finström", "Forssa", "Föglö", "Geta", "Haapajärvi", "Haapavesi", "Hailuoto", "Halsua", "Hamina", "Hammarland", "Hankasalmi", "Hanko", "Harjavalta", "Hartola", "Hattula", "Hausjärvi", "Heinola", "Heinävesi", "Helsinki", "Hirvensalmi", "Hollola", "Huittinen", "Humppila", "Hyrynsalmi", "Hyvinkää", "Hämeenkyrö", "Hämeenlinna", "Ii", "Iisalmi", "Iitti", "Ikaalinen", "Ilmajoki", "Ilomantsi", "Imatra", "Inari", "Inkoo", "Isojoki", "Isokyrö", "Janakkala", "Joensuu", "Jokioinen", "Jomala", "Joroinen", "Joutsa", "Juuka", "Juupajoki", "Juva", "Jyväskylä", "Jämijärvi", "Jämsä", "Järvenpää", "Kaarina", "Kaavi", "Kajaani", "Kalajoki", "Kangasala", "Kangasniemi", "Kankaanpää", "Kannonkoski", "Kannus", "Karijoki", "Karkkila", "Karstula", "Karvia", "Kaskinen", "Kauhajoki", "Kauhava", "Kauniainen", "Kaustinen", "Keitele", "Kemi", "Kemijärvi", "Keminmaa", "Kemiönsaari", "Kempele", "Kerava", "Keuruu", "Kihniö", "Kinnula", "Kirkkonummi", "Kitee", "Kittilä", "Kiuruvesi", "Kivijärvi", "Kokemäki", "Kokkola", "Kolari", "Konnevesi", "Kontiolahti", "Korsnäs", "Koski TL", "Kotka", "Kouvola", "Kristiinankaupunki", "Kruunupyy", "Kuhmo", "Kuhmoinen", "Kumlinge", "Kuopio", "Kuortane", "Kurikka", "Kustavi", "Kuusamo", "Kyyjärvi", "Kärkölä", "Kärsämäki", "Kökar", "Lahti", "Laihia", "Laitila", "Lapinlahti", "Lapinjärvi", "Lapua", "Laukaa", "Lemi", "Lemland", "Lempäälä", "Leppävirta", "Lestijärvi", "Lieksa", "Lieto", "Liminka", "Liperi", "Lohja", "Loimaa", "Loppi", "Loviisa", "Luhanka", "Lumijoki", "Lumparland", "Luoto", "Luumäki", "Maalahti", "Maarianhamina", "Marttila", "Masku", "Merijärvi", "Merikarvia", "Miehikkälä", "Mikkeli", "Muhos", "Multia", "Muonio", "Mustasaari", "Muurame", "Mynämäki", "Mäntsälä", "Mänttä-Vilppula", "Mäntyharju", "Naantali", "Nakkila", "Närpiö", "Nivala", "Nokia", "Nousiainen", "Nurmes", "Nurmijärvi", "Orimattila", "Oripää", "Orivesi", "Oulainen", "Oulu", "Outokumpu", "Padasjoki", "Paimio", "Paltamo", "Parainen", "Parikkala", "Parkano", "Pedersören kunta", "Pelkosenniemi", "Pello", "Perho", "Petäjävesi", "Pieksämäki", "Pielavesi", "Pietarsaari", "Pihtipudas", "Pirkkala", "Polvijärvi", "Pomarkku", "Pori", "Pornainen", "Porvoo", "Posio", "Pudasjärvi", "Pukkila", "Punkalaidun", "Puolanka", "Puumala", "Pyhtää", "Pyhäjoki", "Pyhäjärvi", "Pyhäntä", "Pyhäranta", "Pälkäne", "Pöytyä", "Raahe", "Rantasalmi", "Ranua", "Raasepori", "Raisio", "Rautalampi", "Rautavaara", "Rautjärvi", "Reisjärvi", "Riihimäki", "Ristijärvi", "Rovaniemi", "Ruokolahti", "Ruovesi", "Rusko", "Rääkkylä", "Saarijärvi", "Salla", "Salo", "Saltvik", "Sastamala", "Sauvo", "Savitaipale", "Savonlinna", "Savukoski", "Seinäjoki", "Sievi", "Siikainen", "Siikajoki", "Siikalatva", "Siilinjärvi", "Simo", "Sipoo", "Siuntio", "Sodankylä", "Soini", "Somero", "Sonkajärvi", "Sotkamo", "Sottunga", "Sulkava", "Sund", "Suomussalmi", "Suonenjoki", "Sysmä", "Säkylä", "Taipalsaari", "Taivalkoski", "Taivassalo", "Tammela", "Tampere", "Tervo", "Tervola", "Teuva", "Tohmajärvi", "Toholampi", "Toivakka", "Tornio", "Turku", "Tuusula", "Ulvila", "Utsjoki", "Uurainen", "Uusikaarlepyy", "Uusikaupunki", "Vaala", "Vaasa", "Valkeakoski", "Vantaa", "Varkaus", "Vehmaa", "Vesanto", "Vesilahti", "Veteli", "Vieremä", "Vihti", "Viitasaari", "Vimpeli", "Virrat", "Vårdö", "Vöyri", "Ylitornio", "Ylivieska", "Ylöjärvi", "Ypäjä", "Ähtäri", "Äänekoski",
+].sort((left, right) => left.localeCompare(right, "fi"));
+
+const communityRegions = {
+  Finland: { regions: [], cities: finnishMunicipalities },
+  Germany: { regions: [], cities: ["Berlin", "Hamburg"] },
+  Netherlands: { regions: [], cities: ["Amsterdam", "Rotterdam"] },
+  Sweden: { regions: [], cities: ["Stockholm", "Gothenburg"] },
+  Norway: { regions: [], cities: ["Oslo", "Bergen"] },
+  Denmark: { regions: [], cities: ["Copenhagen", "Aarhus"] },
+  Belgium: { regions: [], cities: ["Brussels", "Antwerp"] },
+  France: { regions: [], cities: ["Paris", "Lyon"] },
+  Italy: { regions: [], cities: ["Rome", "Milan"] },
+  Spain: { regions: [], cities: ["Madrid", "Barcelona"] },
+};
+
+const worldCountryCodes = [
+  "AF", "AL", "DZ", "AD", "AO", "AG", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "BI", "CV", "KH", "CM", "CA", "CF", "TD", "CL", "CN", "CO", "KM", "CG", "CD", "CR", "CI", "HR", "CU", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "GQ", "ER", "EE", "SZ", "ET", "FJ", "FI", "FR", "GA", "GM", "GE", "DE", "GH", "GR", "GD", "GT", "GN", "GW", "GY", "HT", "VA", "HN", "HU", "IS", "IN", "ID", "IR", "IQ", "IE", "IL", "IT", "JM", "JP", "JO", "KZ", "KE", "KI", "KP", "KR", "KW", "KG", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MR", "MU", "MX", "FM", "MD", "MC", "MN", "ME", "MA", "MZ", "MM", "NA", "NR", "NP", "NL", "NZ", "NI", "NE", "NG", "MK", "NO", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "QA", "RO", "RU", "RW", "KN", "LC", "VC", "WS", "SM", "ST", "SA", "SN", "RS", "SC", "SL", "SG", "SK", "SI", "SB", "SO", "ZA", "SS", "ES", "LK", "SD", "SR", "SE", "CH", "SY", "TW", "TJ", "TZ", "TH", "TL", "TG", "TO", "TT", "TN", "TR", "TM", "TV", "UG", "UA", "AE", "GB", "US", "UY", "UZ", "VU", "VE", "VN", "YE", "ZM", "ZW",
+];
+const regionName = new Intl.DisplayNames(["en"], { type: "region" });
+const allCommunityCountries = [...new Set([...Object.keys(communityRegions), ...worldCountryCodes.map((code) => regionName.of(code))])].sort((left, right) => left.localeCompare(right));
+
+const tampereChannels = [
+  { title: "Jobs & Opportunities", description: "Jobs and opportunities shared by members." },
+  { title: "Living & Housing", description: "Housing, neighbourhoods and everyday life." },
+  { title: "Documents & Registration", description: "Local registration, documents and practical steps." },
+  { title: "Events", description: "Meetups, local events and activities." },
+  { title: "General", description: "Questions and conversations for the Tampere community." },
+];
+
+const tamperePosts = [
+  { title: "Warehouse worker needed in Tampere", channel: "Jobs & Opportunities", author: "Andi", time: "2h ago" },
+  { title: "Opening a bank account in Finland", channel: "Documents & Registration", author: "Sinta", time: "5h ago" },
+  { title: "Indonesian meetup this weekend", channel: "Events", author: "Rina", time: "Yesterday" },
+];
+
+const countryGuideTopics = [
+  { title: "Working & employment", description: "Employment contracts, salary, working hours and workplace rules.", keywords: ["employment", "contract", "salary", "working hours", "job"] },
+  { title: "Documents & registration", description: "Local registration, identification and required documents.", keywords: ["registration", "documents", "identification"] },
+  { title: "Residence & permits", description: "Residence status, permits and related practical information.", keywords: ["residence", "permit", "visa"] },
+  { title: "Housing", description: "Renting, accommodation and local housing basics.", keywords: ["housing", "rent", "accommodation"] },
+  { title: "Banking & finances", description: "Bank accounts, payments and everyday financial matters.", keywords: ["bank", "account", "payments", "finance"] },
+  { title: "Healthcare", description: "Accessing healthcare and important local information.", keywords: ["health", "healthcare", "doctor"] },
+  { title: "Rights & safety", description: "Worker rights, workplace safety and where to get support.", keywords: ["rights", "safety", "support"] },
+  { title: "Everyday life", description: "Transport, services and practical life in the region.", keywords: ["transport", "services", "life"] },
+  { title: "Embassy & consular services", description: "Indonesian Embassy / consulate information and relevant services.", keywords: ["embassy", "consulate", "indonesia"] },
+];
+
+const workingEmploymentArticles = ["Employment contract", "Salary and working hours", "Workplace safety", "Employee rights", "Before you accept a job offer"];
+
+const emptyAdditionalEducationEntry = {
+  id: null,
+  name: "",
+  organisation: "",
+  specialisation: "",
+  graduationYear: "",
+  resumeSelected: true,
+};
+
 const monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
 
 function companyDuration(positions) {
@@ -191,7 +296,10 @@ function App() {
   const [suggestions, setSuggestions] = useState(countrySuggestionsSeed);
   const [selectedJob, setSelectedJob] = useState(jobs[0]);
   const [answers, setAnswers] = useState({ night: null, system: null });
-  const [saved, setSaved] = useState(false);
+  const [cvApproved, setCvApproved] = useState(false);
+  const [sharingConsent, setSharingConsent] = useState(false);
+  const [applicationSent, setApplicationSent] = useState(false);
+  const [communityLocation, setCommunityLocation] = useState({ country: "Finland", city: "Tampere" });
 
   const completion = useMemo(() => {
     const checks = [
@@ -218,7 +326,6 @@ function App() {
   }, []);
 
   const go = (target) => {
-    setSaved(false);
     setScreen(target);
     setMobileNavOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -228,6 +335,90 @@ function App() {
     return (
       <div className="app profileMode">
         <ProfileScreen profile={profile} setProfile={setProfile} completion={completion} onNavigate={go} />
+      </div>
+    );
+  }
+
+  if (screen === "jobs") {
+    return (
+      <div className="app profileMode mobileJobsMode">
+        <MobileJobsScreen
+          jobs={jobs}
+          onOpen={(job) => {
+            setSelectedJob(job);
+            setAnswers({ night: null, system: null });
+            setCvApproved(false);
+            setSharingConsent(false);
+            setApplicationSent(false);
+            go("vacancy");
+          }}
+        />
+        <MobileBottomNav active="jobs" onNavigate={go} onMore={() => setMobileNavOpen(true)} />
+      </div>
+    );
+  }
+
+  if (screen === "community") {
+    return (
+      <div className="app profileMode communityMode">
+        <CommunityHome country={communityLocation.country} city={communityLocation.city} setCommunityLocation={setCommunityLocation} />
+        <MobileBottomNav active="community" onNavigate={go} onMore={() => setMobileNavOpen(true)} />
+      </div>
+    );
+  }
+
+  if (screen === "country") {
+    return (
+      <div className="app profileMode countryGuideMode">
+        <CountryGuideHome country={communityLocation.country} city={communityLocation.city} setCommunityLocation={setCommunityLocation} />
+        <MobileBottomNav active="country" onNavigate={go} onMore={() => setMobileNavOpen(true)} />
+      </div>
+    );
+  }
+
+  if (["vacancy", "match", "tailored", "privacy", "application-sent"].includes(screen)) {
+    return (
+      <div className="app profileMode applicationFlowMode">
+        {screen === "vacancy" && <VacancyScreen job={selectedJob} onBack={() => go("jobs")} onNext={() => go("match")} />}
+        {screen === "match" && (
+          <MatchScreen
+            job={selectedJob}
+            answers={answers}
+            setAnswers={setAnswers}
+            onBack={() => go("vacancy")}
+            onNext={() => go("tailored")}
+          />
+        )}
+        {screen === "tailored" && (
+          <TailoredScreen
+            profile={profile}
+            job={selectedJob}
+            answers={answers}
+            approved={cvApproved}
+            setApproved={setCvApproved}
+            onBack={() => go("match")}
+            onNext={() => go("privacy")}
+          />
+        )}
+        {screen === "privacy" && (
+          <PrivacyConfirmationScreen
+            job={selectedJob}
+            profile={profile}
+            consent={sharingConsent}
+            setConsent={setSharingConsent}
+            onBack={() => go("tailored")}
+            onSend={() => { setApplicationSent(true); go("application-sent"); }}
+          />
+        )}
+        {screen === "application-sent" && (
+          <ApplicationSentScreen
+            job={selectedJob}
+            sent={applicationSent}
+            onViewApplication={() => go("tailored")}
+            onBackToJobs={() => go("jobs")}
+          />
+        )}
+        <MobileBottomNav active="jobs" onNavigate={go} onMore={() => setMobileNavOpen(true)} />
       </div>
     );
   }
@@ -290,26 +481,6 @@ function App() {
             suggestions={suggestions}
             setSuggestions={setSuggestions}
             onNext={() => go("jobs")}
-          />
-        )}
-        {screen === "jobs" && <JobsScreen jobs={jobs} onOpen={(job) => { setSelectedJob(job); go("vacancy"); }} />}
-        {screen === "vacancy" && <VacancyScreen job={selectedJob} onNext={() => go("match")} />}
-        {screen === "match" && (
-          <MatchScreen
-            job={selectedJob}
-            answers={answers}
-            setAnswers={setAnswers}
-            onNext={() => go("tailored")}
-          />
-        )}
-        {screen === "tailored" && (
-          <TailoredScreen
-            profile={profile}
-            job={selectedJob}
-            answers={answers}
-            saved={saved}
-            setSaved={setSaved}
-            onBack={() => go("jobs")}
           />
         )}
       </main>
@@ -412,8 +583,9 @@ function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
   const [personalInformationOpen, setPersonalInformationOpen] = useState(false);
   const [editingExperience, setEditingExperience] = useState(null);
   const [editingEducation, setEditingEducation] = useState(null);
+  const [editingAdditionalEducation, setEditingAdditionalEducation] = useState(null);
   const [allEducationOpen, setAllEducationOpen] = useState(false);
-  const [accordionOpen, setAccordionOpen] = useState({ workExperience: false, education: false, skills: false });
+  const [accordionOpen, setAccordionOpen] = useState({ identityVerification: false, workExperience: false, education: false, skills: false, additionalEducation: false });
   const profileScrollPosition = useRef(0);
   const [activeSheet, setActiveSheet] = useState(null);
   const [photoRemoved, setPhotoRemoved] = useState(false);
@@ -421,6 +593,16 @@ function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
   const [jobStatus, setJobStatus] = useState("I am not looking for a job");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [manualSkill, setManualSkill] = useState("");
+  const [additionalEducationEntries, setAdditionalEducationEntries] = useState(initialAdditionalEducationEntries);
+  const [selectedRegionalRecommendation, setSelectedRegionalRecommendation] = useState(null);
+  const [regionalRecommendationStatuses, setRegionalRecommendationStatuses] = useState({});
+  const [regionalRecommendationInfoOpen, setRegionalRecommendationInfoOpen] = useState(false);
+  const [regionalRecommendationsOpen, setRegionalRecommendationsOpen] = useState(false);
+  const [identityStatus, setIdentityStatus] = useState("Not verified");
+  const [personalIdStatus, setPersonalIdStatus] = useState("Not started");
+  const [governmentServiceStatus, setGovernmentServiceStatus] = useState("Not connected");
+  const [personalIdDraft, setPersonalIdDraft] = useState({ type: "", number: "", country: "" });
+  const [governmentService, setGovernmentService] = useState("");
   const experienceCompanies = Object.values(profile.experience.reduce((groups, experience) => {
     const key = `${experience.company}-${experience.place}`;
     if (!groups[key]) groups[key] = { company: experience.company, place: experience.place, positions: [] };
@@ -527,6 +709,57 @@ function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
       skills: current.skills.filter((existing) => normalizeSkill(existing) !== normalizeSkill(skill)),
     }));
   };
+  const openAdditionalEducationEditor = (entry = emptyAdditionalEducationEntry) => {
+    rememberProfileScroll();
+    setEditingAdditionalEducation(entry);
+  };
+  const closeAdditionalEducationEditor = () => {
+    setEditingAdditionalEducation(null);
+    restoreProfileScroll();
+  };
+  const saveAdditionalEducation = (entry) => {
+    setAdditionalEducationEntries((current) => {
+      const savedEntry = { ...entry, id: entry.id || `additional-education-${Date.now()}` };
+      return entry.id
+        ? current.map((item) => item.id === entry.id ? savedEntry : item)
+        : [...current, savedEntry];
+    });
+    closeAdditionalEducationEditor();
+  };
+  const deleteAdditionalEducation = (entryId) => {
+    setAdditionalEducationEntries((current) => current.filter((entry) => entry.id !== entryId));
+    closeAdditionalEducationEditor();
+  };
+  const openRegionalRecommendation = (recommendation) => {
+    setSelectedRegionalRecommendation(recommendation);
+    setRegionalRecommendationInfoOpen(false);
+    setActiveSheet("regional-certificate");
+  };
+  const closeRegionalRecommendation = () => {
+    setSelectedRegionalRecommendation(null);
+    setRegionalRecommendationInfoOpen(false);
+    setActiveSheet(null);
+  };
+  const addRegionalRecommendation = (recommendation) => {
+    setAdditionalEducationEntries((current) => (
+      current.some((entry) => entry.name === recommendation.name)
+        ? current
+        : [...current, {
+          id: `regional-certificate-${recommendation.id}`,
+          name: recommendation.name,
+          organisation: recommendation.organisation,
+          specialisation: recommendation.specialisation,
+          graduationYear: "",
+          resumeSelected: true,
+        }]
+    ));
+    setRegionalRecommendationStatuses((current) => ({ ...current, [recommendation.id]: "Added" }));
+    closeRegionalRecommendation();
+  };
+  const ignoreRegionalRecommendation = (recommendation) => {
+    setRegionalRecommendationStatuses((current) => ({ ...current, [recommendation.id]: "Ignored" }));
+    closeRegionalRecommendation();
+  };
 
   if (personalInformationOpen) {
     return (
@@ -544,6 +777,17 @@ function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
 
   if (editingEducation) {
     return <EducationDetailScreen education={editingEducation} onBack={closeEducationEditor} />;
+  }
+
+  if (editingAdditionalEducation) {
+    return (
+      <AdditionalEducationDetailScreen
+        entry={editingAdditionalEducation}
+        onBack={closeAdditionalEducationEditor}
+        onSave={saveAdditionalEducation}
+        onDelete={deleteAdditionalEducation}
+      />
+    );
   }
 
   if (allEducationOpen) {
@@ -738,6 +982,27 @@ function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
             <div className="resumeCreationPlaceholder">Resume creation is a mock action for this prototype.</div>
           )}
 
+          <div className="identityVerificationSection">
+            <ProfileAccordion title="Identity verification" status={identityStatus} open={accordionOpen.identityVerification} onToggle={() => toggleAccordion("identityVerification")}>
+              <p className="identityVerificationIntro">Verify your identity to make your profile more trustworthy and prepare for employment-related processes.</p>
+              <button className="identityVerificationRow" type="button" onClick={() => setActiveSheet("personal-id")}>
+                <span className="identityVerificationRowCopy"><strong>Personal ID</strong><small>Verify your identity using an official identification document.</small></span>
+                <small className="identityVerificationRowStatus">{personalIdStatus}</small>
+                <ProtoIcon name="chevron-right" />
+              </button>
+              <button className="identityVerificationRow" type="button" onClick={() => setActiveSheet("government-service")}>
+                <span className="identityVerificationRowCopy"><strong>Government service</strong><small>Connect a supported government identity service.</small></span>
+                <small className="identityVerificationRowStatus">{governmentServiceStatus}</small>
+                <ProtoIcon name="chevron-right" />
+              </button>
+              {identityStatus === "Verified" && <p className="identityVerificationConfirmation">Identity verified</p>}
+              {identityStatus === "In progress" && (
+                <button className="identityVerificationDemoAction" type="button" onClick={() => setIdentityStatus("Verified")}>Mark as verified</button>
+              )}
+              <p className="identityVerificationPrivacy">Your identity information is not shared with employers unless required and confirmed by you.</p>
+            </ProfileAccordion>
+          </div>
+
           <p className="myResumeLabel">My resume</p>
           <div className="profileAccordions">
             <ProfileAccordion title="Work Experience" open={accordionOpen.workExperience} onToggle={() => toggleAccordion("workExperience")}>
@@ -805,6 +1070,65 @@ function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
                 Add
               </button>
             </ProfileAccordion>
+
+            <ProfileAccordion title="Certificates & Additional Education" open={accordionOpen.additionalEducation} onToggle={() => toggleAccordion("additionalEducation")}>
+              <p className="certificateSubsectionHeading">Your certificates</p>
+              {additionalEducationEntries.map((entry) => (
+                <article
+                  className="profileRecord educationRecord"
+                  key={entry.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openAdditionalEducationEditor(entry)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      openAdditionalEducationEditor(entry);
+                    }
+                  }}
+                >
+                  <div className="educationRecordDetails">
+                    <strong>{entry.name}</strong>
+                    <span>{entry.organisation}</span>
+                    <small>{entry.specialisation} · {entry.graduationYear}</small>
+                  </div>
+                  <span className="workExperienceEditChevron" aria-hidden="true"><ProtoIcon name="chevron-right" /></span>
+                </article>
+              ))}
+              <section className="regionalRecommendations" aria-labelledby="regional-recommendations-heading">
+                <button
+                  className="regionalRecommendationsToggle"
+                  id="regional-recommendations-heading"
+                  type="button"
+                  aria-expanded={regionalRecommendationsOpen}
+                  onClick={() => setRegionalRecommendationsOpen((open) => !open)}
+                >
+                  <span>Recommended for Finland</span>
+                  <ProtoIcon name={regionalRecommendationsOpen ? "chevron-up" : "chevron-down"} />
+                </button>
+                {regionalRecommendationsOpen && (
+                  <div className="regionalRecommendationsContent">
+                    <p className="regionalRecommendationsNote">Mock recommendations based on your target country and professional profile.</p>
+                    {regionalCertificateRecommendations.slice(0, 3).map((recommendation) => (
+                      <RecommendationRow
+                        key={recommendation.id}
+                        recommendation={recommendation}
+                        status={regionalRecommendationStatuses[recommendation.id]}
+                        onClick={() => openRegionalRecommendation(recommendation)}
+                      />
+                    ))}
+                    {regionalCertificateRecommendations.length > 3 && (
+                      <button className="secondarySectionAction" type="button" onClick={() => setActiveSheet("all-regional-certificates")}>
+                        View all recommendations
+                      </button>
+                    )}
+                  </div>
+                )}
+              </section>
+              <button className="secondarySectionAction" type="button" onClick={() => openAdditionalEducationEditor()}>
+                Add
+              </button>
+            </ProfileAccordion>
           </div>
         </main>
       ) : (
@@ -834,6 +1158,74 @@ function ProfileScreen({ profile, setProfile, completion, onNavigate }) {
                 <span>{option}</span>
                 <span className={`radioIndicator ${jobStatus === option ? "selected" : ""}`} aria-hidden="true" />
               </button>
+            ))}
+          </div>
+        </BottomSheet>
+      )}
+      {activeSheet === "personal-id" && (
+        <BottomSheet title="Personal ID" onClose={() => setActiveSheet(null)} showClose large>
+          <div className="identitySheetForm">
+            <label className="personalField">
+              <span>ID type</span>
+              <input placeholder="Passport, national ID, or residence permit" value={personalIdDraft.type} onChange={(event) => setPersonalIdDraft((current) => ({ ...current, type: event.target.value }))} />
+            </label>
+            <label className="personalField">
+              <span>ID number</span>
+              <input value={personalIdDraft.number} onChange={(event) => setPersonalIdDraft((current) => ({ ...current, number: event.target.value }))} />
+            </label>
+            <label className="personalField">
+              <span>Country of issue</span>
+              <input value={personalIdDraft.country} onChange={(event) => setPersonalIdDraft((current) => ({ ...current, country: event.target.value }))} />
+            </label>
+            <button className="identityUploadPlaceholder" type="button"><ProtoIcon name="document" /><span>Upload or add ID document</span></button>
+          </div>
+          <button className="identityContinueButton" type="button" onClick={() => { setPersonalIdStatus("In progress"); setIdentityStatus("In progress"); setActiveSheet(null); }}>Continue</button>
+        </BottomSheet>
+      )}
+      {activeSheet === "government-service" && (
+        <BottomSheet title="Government service" onClose={() => setActiveSheet(null)} showClose large>
+          <div className="governmentServiceSheet">
+            <p>Choose a supported identity service to continue verification.</p>
+            <div className="sheetOptionList" role="radiogroup" aria-label="Government service">
+              {["National digital ID", "Government identity service", "Other supported service"].map((service) => (
+                <button key={service} className="sheetSelectionRow" type="button" role="radio" aria-checked={governmentService === service} onClick={() => setGovernmentService(service)}>
+                  <span>{service}</span><span className={`radioIndicator ${governmentService === service ? "selected" : ""}`} aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+          </div>
+          <button className="identityContinueButton" type="button" onClick={() => { setGovernmentServiceStatus("In progress"); setIdentityStatus("In progress"); setActiveSheet(null); }}>Continue</button>
+        </BottomSheet>
+      )}
+      {activeSheet === "regional-certificate" && selectedRegionalRecommendation && (
+        <BottomSheet title={selectedRegionalRecommendation.name} onClose={closeRegionalRecommendation} showClose large>
+          <div className="regionalRecommendationSheet">
+            <p>{selectedRegionalRecommendation.description}</p>
+            {regionalRecommendationInfoOpen && (
+              <div className="regionalRecommendationLearnMore">
+                <strong>About this recommendation</strong>
+                <p>{selectedRegionalRecommendation.learnMore}</p>
+              </div>
+            )}
+            <div className="regionalRecommendationActions">
+              <button className="regionalRecommendationPrimary" type="button" onClick={() => addRegionalRecommendation(selectedRegionalRecommendation)}>I already have it</button>
+              <button type="button" onClick={() => setRegionalRecommendationInfoOpen((open) => !open)}>{regionalRecommendationInfoOpen ? "Hide details" : "Learn more"}</button>
+              <button type="button" onClick={() => ignoreRegionalRecommendation(selectedRegionalRecommendation)}>Ignore</button>
+            </div>
+          </div>
+        </BottomSheet>
+      )}
+      {activeSheet === "all-regional-certificates" && (
+        <BottomSheet title="Recommended for Finland" onClose={() => setActiveSheet(null)} showClose large>
+          <div className="regionalRecommendationList">
+            <p>Mock recommendations based on your target country and professional profile.</p>
+            {regionalCertificateRecommendations.map((recommendation) => (
+              <RecommendationRow
+                key={recommendation.id}
+                recommendation={recommendation}
+                status={regionalRecommendationStatuses[recommendation.id]}
+                onClick={() => openRegionalRecommendation(recommendation)}
+              />
             ))}
           </div>
         </BottomSheet>
@@ -1229,6 +1621,101 @@ function EducationDetailScreen({ education, onBack }) {
   );
 }
 
+function AdditionalEducationDetailScreen({ entry, onBack, onSave, onDelete }) {
+  const [draft, setDraft] = useState({ ...emptyAdditionalEducationEntry, ...entry });
+  const [activeEditor, setActiveEditor] = useState(null);
+  const [search, setSearch] = useState("");
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const setField = (field, value) => setDraft((current) => ({ ...current, [field]: value }));
+  const isExistingEntry = Boolean(entry.id);
+  const textEditors = {
+    name: { title: "Name", label: "Name" },
+    graduationYear: { title: "Graduation year", label: "Graduation year", inputMode: "numeric" },
+  };
+  const selectionEditors = {
+    organisation: {
+      title: "Providing organisation",
+      options: ["Indonesian Logistics Academy", "Jakarta Training Centre", "Red Cross Indonesia"],
+    },
+    specialisation: {
+      title: "Specialisation",
+      options: ["Workplace safety", "Logistics & warehouse operations", "First aid"],
+    },
+  };
+  const textEditor = textEditors[activeEditor];
+  const selectionEditor = selectionEditors[activeEditor];
+  const filteredOptions = selectionEditor?.options.filter((option) => option.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())) || [];
+  const closeEditor = () => {
+    setActiveEditor(null);
+    setSearch("");
+  };
+
+  return (
+    <div className="personalInformationScreen additionalEducationDetailScreen">
+      <header className="personalInfoScreenBar">
+        <button aria-label="Back to additional education and certificates" onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <h1>Course or certificate</h1>
+        {isExistingEntry ? (
+          <button className="educationDeleteButton" aria-label="Delete course or certificate" onClick={() => setDeleteOpen(true)}><ProtoIcon name="trash-compact" /></button>
+        ) : <span aria-hidden="true" />}
+      </header>
+
+      <main className="personalInfoForm additionalEducationEditForm">
+        <ExperienceEditBox label="Name" value={draft.name} onClick={() => setActiveEditor("name")} />
+        <ExperienceEditBox label="Providing organisation" value={draft.organisation} onClick={() => setActiveEditor("organisation")} />
+        <ExperienceEditBox label="Specialisation" value={draft.specialisation} onClick={() => setActiveEditor("specialisation")} />
+        <div className="educationGraduationField">
+          <ExperienceEditBox label="Graduation year" value={draft.graduationYear} onClick={() => setActiveEditor("graduationYear")} />
+          <small>If you are still studying, specify your expected graduation year</small>
+        </div>
+
+        <section className="educationResumeSection">
+          <p className="educationSectionLabel">Include in resumes</p>
+          <label className="experienceResumeCard">
+            <span className="experienceResumeAvatar" aria-hidden="true">SD</span>
+            <span className="experienceResumeDetails"><strong>Warehouse & Logistics Worker</strong><small>Professional resume</small></span>
+            <input type="checkbox" checked={draft.resumeSelected} onChange={(event) => setField("resumeSelected", event.target.checked)} />
+          </label>
+        </section>
+      </main>
+
+      <button className="personalSaveButton" type="button" disabled={!draft.name.trim()} onClick={() => onSave(draft)}>Save</button>
+
+      {textEditor && (
+        <BottomSheet title={textEditor.title} onClose={closeEditor} showClose large>
+          <label className="experienceSheetField">
+            <span>{textEditor.label}</span>
+            <input autoFocus inputMode={textEditor.inputMode} value={draft[activeEditor]} onChange={(event) => setField(activeEditor, event.target.value)} />
+          </label>
+        </BottomSheet>
+      )}
+      {selectionEditor && (
+        <BottomSheet title={selectionEditor.title} onClose={closeEditor} showClose large centeredTitle>
+          <div className="additionalEducationSearch">
+            <input autoFocus placeholder="Search" value={search} onChange={(event) => setSearch(event.target.value)} />
+            <div className="additionalEducationSearchResults">
+              {filteredOptions.map((option) => (
+                <button key={option} type="button" onClick={() => { setField(activeEditor, option); closeEditor(); }}>
+                  {option}
+                </button>
+              ))}
+              {filteredOptions.length === 0 && <p>No suggestions yet.</p>}
+            </div>
+          </div>
+        </BottomSheet>
+      )}
+      {deleteOpen && (
+        <BottomSheet title="Delete this course or certificate?" onClose={() => setDeleteOpen(false)} showClose>
+          <div className="educationDeleteActions">
+            <button className="educationDeleteConfirm" type="button" onClick={() => onDelete(entry.id)}>Delete</button>
+            <button type="button" onClick={() => setDeleteOpen(false)}>Cancel</button>
+          </div>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
 function PhotoManagementScreen({ photoRemoved, photoVisibility, activeSheet, onBack, onVisibilityChange, onOpenSheet, onCloseSheet, onDelete, onAddPhoto }) {
   return (
     <div className="photoManagementScreen">
@@ -1277,30 +1764,45 @@ function PhotoManagementScreen({ photoRemoved, photoVisibility, activeSheet, onB
   );
 }
 
-function BottomSheet({ title, children, onClose, showClose = false, large = false }) {
+function BottomSheet({ title, children, onClose, showClose = false, large = false, centeredTitle = false }) {
   return (
     <div className="bottomSheetOverlay" role="presentation">
       <button className="bottomSheetBackdrop" aria-label="Close sheet" onClick={onClose} />
       <section className={`bottomSheet ${large ? "large" : ""}`} role="dialog" aria-modal="true" aria-label={title || "Options"}>
         <div className="sheetHandle" />
         {showClose && <button className="sheetCloseButton" aria-label="Close sheet" onClick={onClose}><ProtoIcon name="close" /></button>}
-        {title && <h2>{title}</h2>}
+        {title && <h2 className={centeredTitle ? "sheetTitleCentered" : ""}>{title}</h2>}
         {children}
       </section>
     </div>
   );
 }
 
-function ProfileAccordion({ title, open, onToggle, children }) {
+function ProfileAccordion({ title, status, open, onToggle, children }) {
   const panelId = `profile-section-${title.toLowerCase().replaceAll(" ", "-")}`;
   return (
     <section className="profileAccordion">
       <button aria-expanded={open} aria-controls={panelId} onClick={onToggle}>
         <span>{title}</span>
-        <span aria-hidden="true">{open ? "−" : "+"}</span>
+        <span className="profileAccordionHeaderEnd">
+          {status && <small>{status}</small>}
+          <span aria-hidden="true">{open ? "−" : "+"}</span>
+        </span>
       </button>
       {open && <div className="profileAccordionPanel" id={panelId}>{children}</div>}
     </section>
+  );
+}
+
+function RecommendationRow({ recommendation, status, onClick }) {
+  return (
+    <button className="regionalRecommendationRow" type="button" onClick={onClick}>
+      <span className="regionalRecommendationRowCopy">
+        <strong>{recommendation.name}</strong>
+        <small>{recommendation.status}{status ? ` · ${status}` : ""}</small>
+      </span>
+      <span className="workExperienceEditChevron" aria-hidden="true"><ProtoIcon name="chevron-right" /></span>
+    </button>
   );
 }
 
@@ -1308,7 +1810,7 @@ function MobileBottomNav({ active, onNavigate, onMore }) {
   const items = [
     { key: "jobs", label: "Jobs", icon: "jobs", action: () => onNavigate("jobs") },
     { key: "country", label: "Country Guide", icon: "country", action: () => onNavigate("country") },
-    { key: "community", label: "Community", icon: "community", action: () => {} },
+    { key: "community", label: "Community", icon: "community", action: () => onNavigate("community") },
     { key: "profile", label: "Profile", icon: "profile", action: () => onNavigate("profile") },
     { key: "more", label: "More", icon: "more", action: onMore },
   ];
@@ -1330,9 +1832,11 @@ function ProtoIcon({ name }) {
   if (name === "close") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>;
   if (name === "refresh") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.8-4M4 13a8 8 0 0 0 14.8 4M5 4v4h4m6 12v-4h4" /></svg>;
   if (name === "chevron-down") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 9 7 7 7-7" /></svg>;
+  if (name === "chevron-up") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 15 7-7 7 7" /></svg>;
   if (name === "chevron-right") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>;
   if (name === "pencil") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19 8.5 15.5 5zM13.8 6.7l3.5 3.5" /></svg>;
   if (name === "plus") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>;
+  if (name === "search") return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5" /><path d="m15 15 4.5 4.5" /></svg>;
   if (name === "calendar") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1.5" /><path d="M8 3v4M16 3v4M4 10h16" /></svg>;
   if (name === "download") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 19h14" /></svg>;
   if (name === "trash-compact") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7h8m-6-2h4m-7 2 1 12h8l1-12M10.5 11v4.5M13.5 11v4.5" /></svg>;
@@ -1448,129 +1952,580 @@ function CvSection({ title, children }) {
   return <div className="cvSection"><h4>{title}</h4><div>{children}</div></div>;
 }
 
-function JobsScreen({ jobs, onOpen }) {
+function MobileJobsScreen({ jobs, onOpen }) {
   return (
-    <>
-      <PageIntro
-        eyebrow="WORK OPPORTUNITIES"
-        title="Jobs matched to your profile"
-        text="Match percentages are prototype-only hints based on the information already in your profile."
-        side={<NextStep>Open a vacancy to see what already matches and what still needs clarification.</NextStep>}
-      />
-      <div className="jobsGrid">
-        {jobs.map((job) => (
-          <Card key={job.id} className="jobCard">
-            <div className="jobTop"><span className="match">{job.match}% match</span><span>{job.type}</span></div>
-            <h3>{job.title}</h3>
-            <p>{job.company}</p>
-            <div className="jobMeta">{job.location}<br/>{job.salary}</div>
-            <button className="primaryBtn full" onClick={() => onOpen(job)}>View opportunity</button>
-          </Card>
-        ))}
-      </div>
-    </>
-  );
-}
-
-function VacancyScreen({ job, onNext }) {
-  return (
-    <>
-      <PageIntro
-        eyebrow="VACANCY"
-        title={job.title}
-        text={`${job.company} · ${job.location}`}
-        side={<NextStep>Check the requirements, then answer only the questions that are still unclear.</NextStep>}
-      />
-      <div className="reviewGrid">
-        <Card>
-          <h3>Role details</h3>
-          <div className="infoGrid">
-            <Info label="Salary" value={job.salary} />
-            <Info label="Contract" value={job.type} />
-            <Info label="Location" value={job.location} />
-            <Info label="Employer" value={job.company} />
-          </div>
-          <h3 className="subHead">Requirements vs your profile</h3>
-          {job.requirements.map(([label, state]) => (
-            <div className="requirement" key={label}>
-              <span className={`reqDot ${state}`}>{state === "met" ? "✓" : state === "unclear" ? "?" : "!"}</span>
-              <strong>{label}</strong>
-              <span>{state}</span>
-            </div>
+    <div className="mobileJobsScreen">
+      <header className="mobileJobsBar">
+        <h1>Jobs</h1>
+        <button type="button" aria-label="Search jobs"><ProtoIcon name="search" /></button>
+      </header>
+      <main className="mobileJobsContent">
+        <p className="mobileJobsIntro">Jobs matched to your professional profile</p>
+        <div className="mobileJobsList">
+          {jobs.map((job) => (
+            <article
+              className="mobileJobCard"
+              key={job.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => onOpen(job)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onOpen(job);
+                }
+              }}
+            >
+              <div className="mobileJobCardTop"><span>{job.match}% match</span><small>{job.type}</small></div>
+              <div className="mobileJobCardTitle">
+                <div>
+                  <h2>{job.title}</h2>
+                  <strong>{job.company}</strong>
+                </div>
+                <span className="workExperienceEditChevron" aria-hidden="true"><ProtoIcon name="chevron-right" /></span>
+              </div>
+              <p>{job.location}</p>
+              <p>{job.salary}</p>
+            </article>
           ))}
-          <button className="primaryBtn" onClick={onNext}>Review questions →</button>
-        </Card>
-        <Card className="softCard">
-          <h3>Why this matters</h3>
-          <p>Rantau does not add missing qualifications. It asks you to confirm what you actually have before suggesting CV changes.</p>
-        </Card>
-      </div>
-    </>
-  );
-}
-
-function MatchScreen({ job, answers, setAnswers, onNext }) {
-  const set = (id, value) => setAnswers({ ...answers, [id]: value });
-  return (
-    <>
-      <PageIntro
-        eyebrow="APPLICATION ASSISTANT"
-        title="We have 2 questions for you"
-        text={`These questions are based on ${job.company}'s vacancy. Your answers are only added if you confirm them.`}
-        side={<NextStep>Confirm only experience that is true for you. Skip anything that does not apply.</NextStep>}
-      />
-      <div className="contentNarrow">
-        {matchQuestions.map((q) => (
-          <Card key={q.id}>
-            <h3>{q.question}</h3>
-            <p>{q.helper}</p>
-            <div className="answerButtons">
-              <button className={answers[q.id] === "yes" ? "selectedAnswer" : ""} onClick={() => set(q.id, "yes")}>Yes</button>
-              <button className={answers[q.id] === "no" ? "selectedAnswer" : ""} onClick={() => set(q.id, "no")}>No</button>
-              <button className={answers[q.id] === "skip" ? "selectedAnswer" : ""} onClick={() => set(q.id, "skip")}>Skip</button>
-            </div>
-          </Card>
-        ))}
-        <button className="primaryBtn full" onClick={onNext}>Prepare tailored CV →</button>
-      </div>
-    </>
-  );
-}
-
-function TailoredScreen({ profile, job, answers, saved, setSaved, onBack }) {
-  const extras = [];
-  if (answers.night === "yes") extras.push("Available for rotating / night shifts");
-  if (answers.system === "yes") extras.push("Inventory system experience confirmed");
-  return (
-    <>
-      <PageIntro
-        eyebrow="JOB-SPECIFIC CV"
-        title={`Tailored for ${job.title}`}
-        text="This version only emphasizes information you already confirmed. Nothing new is invented."
-        side={<NextStep>Approve the final CV version before applying.</NextStep>}
-      />
-      <div className="reviewGrid">
-        <div className="stack">
-          <Card>
-            <h3>Suggested emphasis</h3>
-            <p>For this vacancy, Rantau would move your warehouse experience higher and highlight inventory handling.</p>
-            {extras.length > 0 ? (
-              <ul className="benefits">{extras.map((e) => <li key={e}>{e}</li>)}</ul>
-            ) : <p className="muted">No extra confirmed facts were added.</p>}
-          </Card>
-          <Card>
-            <h3>Final approval</h3>
-            <p>You remain in control. Approve this CV version or go back to opportunities.</p>
-            <div className="actions">
-              <button className="primaryBtn" onClick={() => setSaved(true)}>{saved ? "Approved ✓" : "Approve CV"}</button>
-              <button className="secondaryBtn" onClick={onBack}>Back to jobs</button>
-            </div>
-            {saved && <div className="successBox">Prototype complete: your tailored CV is ready for the mock application step.</div>}
-          </Card>
         </div>
-        <CvPreview profile={profile} job={job} />
+      </main>
+    </div>
+  );
+}
+
+function CommunityHome({ country, city, setCommunityLocation }) {
+  const [locationActionsOpen, setLocationActionsOpen] = useState(false);
+  const [placeholderSheet, setPlaceholderSheet] = useState(null);
+  const channelData = country === "Finland" && city === "Tampere" ? tampereChannels : tampereChannels.map((channel) => ({ ...channel, description: `Community discussion for ${city || "your selected city"}.` }));
+  const postData = country === "Finland" && city === "Tampere" ? tamperePosts : tamperePosts.map((post) => ({ ...post, title: city ? `${post.title} — ${city}` : post.title, time: "Recently" }));
+  const selectedRegionLabel = [country, city].filter(Boolean).join(" · ") || "Choose your community";
+
+  return (
+    <div className="communityHomeScreen">
+      <header className="communityHomeBar">
+        <h1>Community</h1>
+        <button className="communityRegionTrigger" type="button" aria-haspopup="dialog" aria-expanded={locationActionsOpen} onClick={() => setLocationActionsOpen(true)}>
+          <span>{selectedRegionLabel}</span>
+          <ProtoIcon name="chevron-down" />
+        </button>
+      </header>
+      <main className="communityHomeContent">
+        <p className="communityAccessNote">Posts and chats are available to registered members only.</p>
+        <button className="communityMessagesRow" type="button" onClick={() => setPlaceholderSheet({ type: "messages", title: "Messages" })}>
+          <span><strong>Messages</strong><small>1 unread message</small></span>
+          <ProtoIcon name="chevron-right" />
+        </button>
+
+        <section className="communitySection" aria-labelledby="community-channels-title">
+          <h2 id="community-channels-title">Channels</h2>
+          <div className="communityList">
+            {channelData.map((channel) => (
+              <button className="communityRow" type="button" key={channel.title} onClick={() => setPlaceholderSheet({ type: "channel", title: channel.title })}>
+                <span><strong>{channel.title}</strong><small>{channel.description}</small></span>
+                <ProtoIcon name="chevron-right" />
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="communitySection" aria-labelledby="community-posts-title">
+          <h2 id="community-posts-title">Recent posts</h2>
+          <div className="communityPostList">
+            {postData.map((post) => (
+              <button className="communityPost" type="button" key={`${post.title}-${post.author}`} onClick={() => setPlaceholderSheet({ type: "post", title: post.title })}>
+                <strong>{post.title}</strong>
+                <span>{post.channel}</span>
+                <small>Shared by {post.author} · {post.time}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+
+      </main>
+
+      {locationActionsOpen && (
+        <LocationSettingsSheet title="Community location" country={country} city={city} setCommunityLocation={setCommunityLocation} onClose={() => setLocationActionsOpen(false)} />
+      )}
+
+      {placeholderSheet && (
+        <BottomSheet title={placeholderSheet.title} onClose={() => setPlaceholderSheet(null)} showClose large>
+          <p className="communityPlaceholderText">
+            {placeholderSheet.type === "messages" ? "Your chats will appear here in a future prototype step." : "This is a clickable preview. The detailed community view will be added later."}
+          </p>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
+function LocationSettingsSheet({ title, country, city, setCommunityLocation, onClose }) {
+  const [expanded, setExpanded] = useState(null);
+  const [countrySearch, setCountrySearch] = useState("");
+  const [citySearch, setCitySearch] = useState("");
+  const cities = communityRegions[country]?.cities || [];
+  const matchingCountries = allCommunityCountries.filter((option) => option.toLocaleLowerCase().includes(countrySearch.trim().toLocaleLowerCase()));
+  const matchingCities = [...cities].sort((left, right) => left.localeCompare(right, country === "Finland" ? "fi" : "en")).filter((option) => option.toLocaleLowerCase().includes(citySearch.trim().toLocaleLowerCase()));
+  const selectCountry = (option) => {
+    setCommunityLocation({ country: option, city: "" });
+    setCitySearch("");
+    setExpanded(null);
+  };
+  const selectCity = (option) => {
+    setCommunityLocation({ country, city: option });
+    setExpanded(null);
+  };
+
+  return (
+    <BottomSheet title={title} onClose={onClose} showClose large>
+      <div className="locationSheetAccordions">
+        <section className="locationSheetAccordion">
+          <button className="locationSheetAccordionRow" type="button" aria-expanded={expanded === "country"} onClick={() => setExpanded((current) => current === "country" ? null : "country")}>
+            <span><strong>Choose country</strong><small>{country || "Select country"}</small></span>
+            <ProtoIcon name={expanded === "country" ? "chevron-up" : "chevron-down"} />
+          </button>
+          {expanded === "country" && (
+            <div className="locationSheetAccordionContent">
+              <input autoFocus type="search" placeholder="Search country" value={countrySearch} onChange={(event) => setCountrySearch(event.target.value)} />
+              <div className="communityPickerList" role="listbox" aria-label="Countries">{matchingCountries.map((option) => <button key={option} type="button" role="option" aria-selected={country === option} onClick={() => selectCountry(option)}>{option}</button>)}</div>
+            </div>
+          )}
+        </section>
+        <section className="locationSheetAccordion">
+          <button className="locationSheetAccordionRow" type="button" aria-expanded={expanded === "city"} onClick={() => setExpanded((current) => current === "city" ? null : "city")}>
+            <span><strong>Choose city</strong><small>{city || "Select city"}</small></span>
+            <ProtoIcon name={expanded === "city" ? "chevron-up" : "chevron-down"} />
+          </button>
+          {expanded === "city" && (
+            <div className="locationSheetAccordionContent">
+              <input autoFocus type="search" placeholder="Search city" value={citySearch} onChange={(event) => setCitySearch(event.target.value)} />
+              <div className="communityPickerList" role="listbox" aria-label={`Cities in ${country}`}>{matchingCities.length > 0 ? matchingCities.map((option) => <button key={option} type="button" role="option" aria-selected={city === option} onClick={() => selectCity(option)}>{option}</button>) : <p className="communityPickerEmpty">No mock cities are available for this country yet.</p>}</div>
+            </div>
+          )}
+        </section>
       </div>
-    </>
+    </BottomSheet>
+  );
+}
+
+function CountryGuideHome({ country, city, setCommunityLocation }) {
+  const [query, setQuery] = useState("");
+  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [locationSheet, setLocationSheet] = useState(null);
+  const [aiGuidanceOpen, setAiGuidanceOpen] = useState(false);
+  const selectedLocation = [country, city].filter(Boolean).join(" · ") || "Choose your location";
+  const filteredTopics = countryGuideTopics.filter((topic) => {
+    const haystack = [topic.title, topic.description, ...topic.keywords].join(" ").toLocaleLowerCase();
+    return haystack.includes(query.trim().toLocaleLowerCase());
+  });
+
+  if (selectedTopic) {
+    return <CountryGuideArticleList topic={selectedTopic} country={country} onBack={() => setSelectedTopic(null)} />;
+  }
+
+  return (
+    <div className="countryGuideScreen">
+      <header className="countryGuideBar">
+        <h1>Country Guide</h1>
+        <button className="countryGuideLocation" type="button" aria-haspopup="dialog" onClick={() => setLocationSheet("actions")}>
+          <span>{selectedLocation}</span>
+          <ProtoIcon name="chevron-down" />
+        </button>
+      </header>
+      <main className="countryGuideContent">
+        <p className="countryGuideIntro">Practical information for living and working in your selected country.</p>
+        <input className="countryGuideSearch" type="search" placeholder="Search Country Guide" value={query} onChange={(event) => setQuery(event.target.value)} />
+
+        <section className="countryGuideTopicSection" aria-labelledby="country-guide-topics">
+          <h2 id="country-guide-topics">Explore by topic</h2>
+          <div className="countryGuideTopicList">
+            {filteredTopics.map((topic) => (
+              <button className="countryGuideTopic" type="button" key={topic.title} onClick={() => setSelectedTopic(topic)}>
+                <span><strong>{topic.title}</strong><small>{topic.description}</small></span>
+                <ProtoIcon name="chevron-right" />
+              </button>
+            ))}
+            {filteredTopics.length === 0 && <p className="countryGuideNoResults">No mock topic matches this search.</p>}
+          </div>
+        </section>
+
+        <button className="countryGuideAi" type="button" onClick={() => setAiGuidanceOpen(true)}>
+          <span><strong>AI guidance</strong><small>Get help understanding information based on your profile and selected region.</small></span>
+          <ProtoIcon name="chevron-right" />
+        </button>
+        <p className="countryGuideAiNote">AI guidance does not replace official information.</p>
+      </main>
+
+      {locationSheet === "actions" && (
+        <LocationSettingsSheet title="Country Guide location" country={country} city={city} setCommunityLocation={setCommunityLocation} onClose={() => setLocationSheet(null)} />
+      )}
+      {aiGuidanceOpen && (
+        <BottomSheet title="AI guidance" onClose={() => setAiGuidanceOpen(false)} showClose large>
+          <div className="countryGuideAiSheet">
+            <p>Prototype support based on your profile and selected region.</p>
+            <button type="button" onClick={() => setAiGuidanceOpen(false)}>Explain in simple language<ProtoIcon name="chevron-right" /></button>
+            <button type="button" onClick={() => setAiGuidanceOpen(false)}>What does this mean for me?<ProtoIcon name="chevron-right" /></button>
+            <button type="button" onClick={() => setAiGuidanceOpen(false)}>Create my checklist<ProtoIcon name="chevron-right" /></button>
+            <small>AI guidance does not replace official information.</small>
+          </div>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
+function CountryGuideArticleList({ topic, country, onBack }) {
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const articleListScrollPosition = useRef(0);
+  const articles = topic.title === "Working & employment"
+    ? workingEmploymentArticles
+    : ["Overview", "Practical steps", "Where to find official information"];
+  const openArticle = (article) => {
+    articleListScrollPosition.current = window.scrollY;
+    setSelectedArticle(article);
+  };
+  const closeArticle = () => {
+    setSelectedArticle(null);
+    requestAnimationFrame(() => window.scrollTo(0, articleListScrollPosition.current));
+  };
+
+  if (selectedArticle) {
+    return <CountryGuideArticleDetail title={selectedArticle} topic={topic.title} country={country} onBack={closeArticle} onOpenArticle={setSelectedArticle} />;
+  }
+
+  return (
+    <div className="countryGuideScreen">
+      <header className="countryGuideDetailBar">
+        <button type="button" aria-label="Back to Country Guide" onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <h1>{topic.title}</h1>
+        <span aria-hidden="true" />
+      </header>
+      <main className="countryGuideContent countryGuideArticleContent">
+        <p className="countryGuideIntro">Mock articles for {topic.title.toLocaleLowerCase()}.</p>
+        <div className="countryGuideArticleList">
+          {articles.map((article) => <button type="button" key={article} onClick={() => openArticle(article)}><span>{article}</span><ProtoIcon name="chevron-right" /></button>)}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function CountryGuideArticleDetail({ title, topic, country, onBack, onOpenArticle }) {
+  const [aiGuidanceOpen, setAiGuidanceOpen] = useState(false);
+  const [aiResponse, setAiResponse] = useState(null);
+  const [checklist, setChecklist] = useState({ registration: false, identity: false, residence: false, tax: false, banking: false });
+  const isPractical = title === "Practical steps";
+  const isOfficialSources = title === "Where to find official information";
+  const isEmploymentContract = title === "Employment contract";
+  const aiActions = isPractical
+    ? [["checklist", "Create my checklist"], ["first", "What should I do first?"]]
+    : isOfficialSources
+      ? [["source", "Which source should I use?"], ["authority", "Explain what this authority does"]]
+      : isEmploymentContract
+        ? [["simple", "Explain this in simple language"], ["contract", "What should I check for my situation?"]]
+        : [["simple", "Explain in simple language"], ["personal", "What does this mean for me?"], ["checklist", "Create my checklist"]];
+
+  return (
+    <div className="countryGuideScreen">
+      <header className="countryGuideDetailBar">
+        <button type="button" aria-label={`Back to ${topic}`} onClick={onBack}><ProtoIcon name="arrow-left" /></button>
+        <h1>{title}</h1>
+        <span aria-hidden="true" />
+      </header>
+      <main className="countryGuideContent countryGuideDetailContent">
+        <p className="countryGuideArticleCountry">{country}</p>
+        <CountryGuideArticleContent title={title} topic={topic} country={country} />
+        <section className="countryGuideSource">
+          <strong>Information source</strong>
+          <small>Official / reviewed information</small>
+        </section>
+        <button className="countryGuideAi" type="button" onClick={() => setAiGuidanceOpen(true)}>
+          <span><strong>AI guidance</strong><small>Get help understanding this information for your situation.</small></span>
+          <ProtoIcon name="chevron-right" />
+        </button>
+        <section className="countryGuideRelated">
+          <h2>Related articles</h2>
+          <div className="countryGuideArticleList">
+            {["Practical steps", "Where to find official information"].filter((article) => article !== title).map((article) => <button type="button" key={article} onClick={() => onOpenArticle(article)}><span>{article}</span><ProtoIcon name="chevron-right" /></button>)}
+          </div>
+        </section>
+      </main>
+
+      {aiGuidanceOpen && (
+        <BottomSheet title="AI guidance" onClose={() => { setAiGuidanceOpen(false); setAiResponse(null); }} showClose large>
+          <div className="countryGuideAiSheet">
+            <p>Prototype support for a Warehouse & Logistics Worker preparing to work in Finland.</p>
+            {aiActions.map(([key, label]) => <button type="button" key={key} onClick={() => setAiResponse(key)}>{label}<ProtoIcon name="chevron-right" /></button>)}
+            {aiResponse === "simple" && <p className="countryGuideAiResponse">This page highlights the steps worth checking with the relevant official service before you make a decision.</p>}
+            {aiResponse === "personal" && <p className="countryGuideAiResponse">For your warehouse and logistics profile, start with registration and tax information before accepting or beginning a job.</p>}
+            {aiResponse === "first" && <p className="countryGuideAiResponse">Start by checking your documents and the registration steps that apply to your arrival date and employment plan.</p>}
+            {aiResponse === "source" && <p className="countryGuideAiResponse">Use the authority responsible for the exact topic first, then confirm any personal case with an official service.</p>}
+            {aiResponse === "authority" && <p className="countryGuideAiResponse">Each authority covers a different part of the process: registration, tax, residence or consular support.</p>}
+            {aiResponse === "contract" && <p className="countryGuideAiResponse">Before signing, compare the salary, hours, probation and notice period with what was discussed for the role.</p>}
+            {aiResponse === "checklist" && (
+              <div className="countryGuideChecklist">
+                {[["registration", "Check local registration"], ["identity", "Check your personal identity code"], ["residence", "Review residence documentation"], ["tax", "Review tax registration"], ["banking", "Prepare banking / identification basics"]].map(([key, label]) => (
+                  <label key={key}><input type="checkbox" checked={checklist[key]} onChange={(event) => setChecklist((current) => ({ ...current, [key]: event.target.checked }))} />{label}</label>
+                ))}
+              </div>
+            )}
+            <small>AI guidance does not replace official information.</small>
+          </div>
+        </BottomSheet>
+      )}
+    </div>
+  );
+}
+
+function CountryGuideArticleContent({ title, topic, country }) {
+  if (title === "Overview") {
+    return (
+      <>
+        <p className="countryGuideArticleIntro">Key registration and document steps to check when preparing to live and work in {country}.</p>
+        <section className="countryGuideArticlePoints">
+          <h2>Key topics</h2>
+          <ul>{["Local registration", "Personal identity code", "Residence documentation", "Tax-related registration", "Banking / identification basics"].map((point) => <li key={point}>{point}</li>)}</ul>
+        </section>
+      </>
+    );
+  }
+
+  if (title === "Practical steps") {
+    return (
+      <section className="countryGuideProcedure">
+        <p className="countryGuideArticleIntro">A simple sequence of practical steps to plan around your move and start of work.</p>
+        <div><h2>Before arrival</h2><ol><li>Check required documents</li><li>Prepare identification</li><li>Check employment documents</li></ol></div>
+        <div><h2>After arrival</h2><ol><li>Register locally</li><li>Obtain required identification</li><li>Set up banking and practical services</li></ol></div>
+      </section>
+    );
+  }
+
+  if (title === "Where to find official information") {
+    const sources = [
+      ["Local registration authority", "Information about registration and local identity procedures."],
+      ["Tax administration", "Information about tax-related registration."],
+      ["Immigration / residence services", "Information about residence status and permits."],
+      ["Indonesian Embassy / Consulate", "Consular information and support."],
+    ];
+    return (
+      <section className="countryGuideOfficialSources">
+        <p className="countryGuideArticleIntro">Use official institutions to confirm requirements for your individual situation.</p>
+        <h2>Official sources</h2>
+        <div>{sources.map(([name, description]) => <button type="button" key={name}><span><strong>{name}</strong><small>{description}</small><em>Official source</em></span><ProtoIcon name="chevron-right" /></button>)}</div>
+      </section>
+    );
+  }
+
+  if (title === "Employment contract") {
+    return (
+      <section className="countryGuideContractGuide">
+        <p className="countryGuideArticleIntro">Review the essential terms before agreeing to an employment contract.</p>
+        <h2>What to check</h2>
+        <div>{["Salary", "Working hours", "Contract duration", "Probation", "Workplace location", "Notice period"].map((item) => <div key={item}><strong>{item}</strong><small>Confirm this matches what was discussed for the role.</small></div>)}</div>
+        <p>Important question before signing: who can clarify a term you do not understand?</p>
+      </section>
+    );
+  }
+
+  if (topic === "Banking & finances") {
+    return (
+      <section className="countryGuideProcedure">
+        <p className="countryGuideArticleIntro">A practical overview of banking and everyday financial services in {country}.</p>
+        <div><h2>What you may need</h2><ul><li>Identity documentation</li><li>Local contact details</li><li>Information requested by the provider</li></ul></div>
+        <div><h2>Practical tips</h2><ol><li>Compare available services</li><li>Check required documents</li><li>Keep a record of official instructions</li></ol></div>
+      </section>
+    );
+  }
+
+  return <p className="countryGuideArticleIntro">Mock guidance for {title.toLocaleLowerCase()} in {country}.</p>;
+}
+
+function ApplicationFlowLayout({ title, onBack, children }) {
+  return (
+    <div className="applicationFlowScreen">
+      <header className="applicationFlowBar">
+        {onBack ? <button type="button" aria-label="Back" onClick={onBack}><ProtoIcon name="arrow-left" /></button> : <span aria-hidden="true" />}
+        <h1>{title}</h1>
+        <span aria-hidden="true" />
+      </header>
+      <main className="applicationFlowContent">{children}</main>
+    </div>
+  );
+}
+
+function VacancyScreen({ job, onBack, onNext }) {
+  return (
+    <ApplicationFlowLayout title="Job details" onBack={onBack}>
+      <section className="applicationJobSummary">
+        <p>Vacancy</p>
+        <h2>{job.title}</h2>
+        <strong>{job.company}</strong>
+        <span>{job.location} · {job.type}</span>
+        <span>{job.salary}</span>
+      </section>
+      <section className="applicationSection">
+        <h2>Requirements and your profile</h2>
+        {job.requirements.map(([label, state]) => (
+          <div className="applicationRequirement" key={label}>
+            <span>{label}</span>
+            <small>{state === "met" ? "In your profile" : state === "unclear" ? "To clarify" : "Not confirmed"}</small>
+          </div>
+        ))}
+      </section>
+      <p className="applicationSecondaryNote">You will review and approve your CV before any information is shared.</p>
+      <button className="applicationFixedButton" type="button" onClick={onNext}>Prepare application</button>
+    </ApplicationFlowLayout>
+  );
+}
+
+function MatchScreen({ answers, setAnswers, onBack, onNext }) {
+  const set = (id, value) => setAnswers((current) => ({ ...current, [id]: value }));
+  return (
+    <ApplicationFlowLayout title="Prepare your application" onBack={onBack}>
+      <p className="applicationIntro">We found a few details that may help make your CV more relevant to this vacancy. Confirm only what is true for you.</p>
+      <div className="applicationQuestionList">
+        {matchQuestions.map((question) => (
+          <section className="applicationQuestion" key={question.id}>
+            <h2>{question.question}</h2>
+            <p>{question.helper}</p>
+            <div className="applicationChoiceGroup" aria-label={question.question}>
+              {[["yes", "Yes"], ["no", "No"], ["skip", "Skip"]].map(([value, label]) => (
+                <button key={value} type="button" className={answers[question.id] === value ? "selected" : ""} onClick={() => set(question.id, value)}>{label}</button>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+      <p className="applicationSecondaryNote">Nothing is added to your CV unless you confirm it.</p>
+      <button className="applicationFixedButton" type="button" onClick={onNext}>Prepare my CV</button>
+    </ApplicationFlowLayout>
+  );
+}
+
+function ApplicationCvPreview({ profile, job, answers }) {
+  const confirmedDetails = [];
+  if (answers.night === "yes") confirmedDetails.push("Available for rotating / night shifts");
+  if (answers.system === "yes") confirmedDetails.push("Inventory system experience confirmed");
+  return (
+    <section className="applicationCvPreview" aria-label="Tailored CV preview">
+      <header>
+        <strong>{profile.fullName}</strong>
+        <span>Warehouse & Logistics Worker</span>
+        <small>{profile.location}</small>
+      </header>
+      <div>
+        <h3>Profile</h3>
+        <p>{profile.summary}</p>
+      </div>
+      <div>
+        <h3>Experience</h3>
+        {profile.experience.map((experience) => <p key={experience.id}><strong>{experience.role}</strong><br /><span>{experience.company} · {experience.period}</span></p>)}
+      </div>
+      <div>
+        <h3>Skills and certificates</h3>
+        <p>{profile.skills.join(" · ")}</p>
+        <p>{profile.certificates.join(" · ")}</p>
+        <p>{profile.languages.join(" · ")}</p>
+      </div>
+      {confirmedDetails.length > 0 && (
+        <div>
+          <h3>Confirmed for this application</h3>
+          <ul>{confirmedDetails.map((detail) => <li key={detail}>{detail}</li>)}</ul>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function TailoredScreen({ profile, job, answers, approved, setApproved, onBack, onNext }) {
+  const [changesOpen, setChangesOpen] = useState(false);
+  return (
+    <ApplicationFlowLayout title="Review your CV" onBack={onBack}>
+      <section className="applicationCvHeading">
+        <p>CV tailored for</p>
+        <h2>{job.title}</h2>
+        <strong>{job.company}</strong>
+      </section>
+      <ApplicationCvPreview profile={profile} job={job} answers={answers} />
+      <section className="applicationChanges">
+        <button className="applicationChangesToggle" type="button" aria-expanded={changesOpen} aria-controls="application-changes-details" onClick={() => setChangesOpen((open) => !open)}>
+          <span>What changed for this application?</span>
+          <ProtoIcon name={changesOpen ? "chevron-up" : "chevron-down"} />
+        </button>
+        {changesOpen && (
+          <div className="applicationChangesDetails" id="application-changes-details">
+            <ul>
+              <li>Warehouse experience moved higher</li>
+              <li>Forklift certificate highlighted</li>
+              <li>English A2 shown clearly</li>
+              <li>Production experience shortened</li>
+            </ul>
+            <p>No new experience or qualifications were added.</p>
+          </div>
+        )}
+      </section>
+      <label className="applicationConsent">
+        <input type="checkbox" checked={approved} onChange={(event) => setApproved(event.target.checked)} />
+        <span>I have reviewed this CV and confirm that the information is correct.</span>
+      </label>
+      <div className="applicationFixedActions">
+        <button className="applicationEditButton" type="button" onClick={onBack}>Edit CV</button>
+        <button className="applicationApproveButton" type="button" disabled={!approved} onClick={onNext}>Approve CV</button>
+      </div>
+    </ApplicationFlowLayout>
+  );
+}
+
+function PrivacyConfirmationScreen({ job, profile, consent, setConsent, onBack, onSend }) {
+  return (
+    <ApplicationFlowLayout title="Ready to apply?" onBack={onBack}>
+      <section className="applicationCvHeading">
+        <h2>{job.company}</h2>
+        <strong>{job.title}</strong>
+      </section>
+      <p className="applicationIntro">Until you confirm, the employer only sees your anonymous professional profile.</p>
+      <section className="applicationAnonymousProfile">
+        <h2>Visible before you confirm</h2>
+        <ul>
+          <li>Candidate number: C-2418</li>
+          <li>Location: {profile.location}</li>
+          <li>Profession: Warehouse & Logistics Worker</li>
+          <li>Skills, total experience and languages</li>
+        </ul>
+      </section>
+      <section className="applicationSharingList">
+        <h2>By continuing, this employer will receive:</h2>
+        <ul>
+          <li>Full name</li>
+          <li>Profile photo</li>
+          <li>Contact details</li>
+          <li>Full approved CV</li>
+          <li>Confirmed professional information</li>
+        </ul>
+      </section>
+      <p className="applicationPrivacyNote">Your personal data and full CV are not shared with the employer before your confirmation.</p>
+      <label className="applicationConsent">
+        <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} />
+        <span>I agree to share this information with this employer.</span>
+      </label>
+      <button className="applicationFixedButton" type="button" disabled={!consent} onClick={onSend}>Send application</button>
+    </ApplicationFlowLayout>
+  );
+}
+
+function ApplicationSentScreen({ job, sent, onViewApplication, onBackToJobs }) {
+  return (
+    <ApplicationFlowLayout title="Application sent">
+      <section className="applicationSuccessState">
+        <div aria-hidden="true">✓</div>
+        <h2>Application sent</h2>
+        <p>{sent ? `Your approved CV and confirmed contact details were shared with ${job.company}.` : "Your application is ready."}</p>
+      </section>
+      <div className="applicationSuccessActions">
+        <button type="button" onClick={onViewApplication}>View application</button>
+        <button type="button" onClick={onBackToJobs}>Back to jobs</button>
+      </div>
+    </ApplicationFlowLayout>
   );
 }
 

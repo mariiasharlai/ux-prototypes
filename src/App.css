@@ -360,6 +360,294 @@ p { color: var(--muted); line-height: 1.55; }
   color: #242424;
 }
 
+/* Mobile Jobs is its own route; it deliberately does not inherit the former desktop candidate-journey shell. */
+.mobileJobsScreen { width: min(100%, 480px); min-height: 100svh; margin: 0 auto; padding-bottom: 82px; background: #fff; color: #242424; }
+.mobileJobsScreen button { font: inherit; }
+.mobileJobsScreen svg { display: block; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.mobileJobsBar { display: flex; min-height: 56px; align-items: center; justify-content: space-between; padding: 6px 12px 6px 16px; border-bottom: 1px solid #cfcfcf; background: #fff; }
+.mobileJobsBar h1 { margin: 0; color: #242424; font-family: inherit; font-size: 18px; line-height: 1.2; }
+.mobileJobsBar button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border: 0; border-radius: 9px; background: transparent; color: #323232; cursor: pointer; }
+.mobileJobsBar button:hover { background: #f0f0f0; }
+.mobileJobsBar button svg { width: 22px; height: 22px; stroke-width: 1.7; }
+.mobileJobsContent { display: grid; gap: 14px; padding: 18px 16px; }
+.mobileJobsIntro { margin: 0; color: #777; font-size: 13px; line-height: 1.4; }
+.mobileJobsList { display: grid; gap: 10px; }
+.mobileJobCard { display: grid; gap: 7px; padding: 14px; border: 1px solid #c9c9c9; border-radius: 10px; background: #fff; color: #292929; cursor: pointer; }
+.mobileJobCard:hover { background: #fafafa; }
+.mobileJobCard:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+.mobileJobCardTop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.mobileJobCardTop span { color: #3f3f3f; font-size: 12px; font-weight: 700; }
+.mobileJobCardTop small { color: #828282; font-size: 12px; }
+.mobileJobCardTitle { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mobileJobCard h2 { margin: 0; color: #292929; font-family: inherit; font-size: 17px; line-height: 1.3; }
+.mobileJobCard strong { display: block; margin-top: 3px; color: #505050; font-size: 13px; font-weight: 550; }
+.mobileJobCard p { margin: 0; color: #777; font-size: 13px; line-height: 1.35; }
+
+/* Regional Community home follows the same mobile-only grayscale system. */
+.communityHomeScreen { width: min(100%, 480px); min-height: 100svh; margin: 0 auto; padding-bottom: 82px; background: #fff; color: #242424; }
+.communityHomeScreen button { font: inherit; }
+.communityHomeScreen svg { display: block; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.communityHomeBar { display: grid; gap: 4px; padding: 11px 16px 10px; border-bottom: 1px solid #cfcfcf; background: #fff; }
+.communityHomeBar h1 { margin: 0; color: #242424; font-family: inherit; font-size: 18px; line-height: 1.25; }
+.communityRegionTrigger { display: inline-flex; width: fit-content; min-height: 28px; align-items: center; gap: 4px; padding: 0; border: 0; background: transparent; color: #666; font-size: 13px; cursor: pointer; }
+.communityRegionTrigger svg { width: 16px; height: 16px; stroke-width: 1.7; }
+.communityHomeContent { display: grid; gap: 22px; padding: 17px 16px 20px; }
+.communityAccessNote { margin: 0; color: #858585; font-size: 12px; line-height: 1.4; }
+.communitySelectionRows { display: grid; gap: 9px; }
+.communitySelectionRow { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 58px; align-items: center; gap: 12px; padding: 9px 12px; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; color: #303030; text-align: left; cursor: pointer; }
+.communitySelectionRow:hover:not(:disabled) { background: #fafafa; }
+.communitySelectionRow:disabled { border-color: #dedede; color: #a2a2a2; cursor: not-allowed; }
+.communitySelectionRow > span { display: grid; gap: 3px; }
+.communitySelectionRow small { color: #858585; font-size: 11px; line-height: 1.2; }
+.communitySelectionRow strong { color: #383838; font-size: 14px; font-weight: 600; line-height: 1.3; }
+.communitySelectionRow:disabled strong { color: #999; }
+.communitySelectionRow svg { width: 18px; height: 18px; color: #656565; stroke-width: 1.7; }
+.communitySelectionRow:disabled svg { color: #aaa; }
+.communitySection { display: grid; gap: 10px; }
+.communitySection h2 { margin: 0; color: #343434; font-family: inherit; font-size: 16px; line-height: 1.3; }
+.communityList,
+.communityPostList { display: grid; overflow: hidden; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; }
+.communityRow { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 62px; align-items: center; gap: 12px; padding: 11px 12px; border: 0; border-bottom: 1px solid #dedede; background: #fff; color: #303030; text-align: left; cursor: pointer; }
+.communityRow:last-child { border-bottom: 0; }
+.communityRow:hover,
+.communityPost:hover { background: #fafafa; }
+.communityRow:focus-visible,
+.communityPost:focus-visible,
+.communityMessagesRow:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+.communityRow > span { display: grid; min-width: 0; gap: 4px; }
+.communityRow strong { color: #303030; font-size: 14px; line-height: 1.3; font-weight: 650; }
+.communityRow small { color: #808080; font-size: 12px; line-height: 1.35; }
+.communityRow svg,
+.communityMessagesRow svg { width: 18px; height: 18px; color: #656565; stroke-width: 1.7; }
+.communityPost { display: grid; gap: 4px; width: 100%; padding: 13px 12px; border: 0; border-bottom: 1px solid #dedede; background: #fff; color: #303030; text-align: left; cursor: pointer; }
+.communityPost:last-child { border-bottom: 0; }
+.communityPost strong { color: #303030; font-size: 14px; line-height: 1.35; font-weight: 650; }
+.communityPost span,
+.communityPost small { color: #7b7b7b; font-size: 12px; line-height: 1.35; }
+.communityMessagesRow { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 58px; align-items: center; gap: 12px; padding: 11px 12px; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; color: #303030; text-align: left; cursor: pointer; }
+.communityMessagesRow > span { display: grid; gap: 3px; }
+.communityMessagesRow strong { font-size: 14px; font-weight: 650; }
+.communityMessagesRow small { color: #7d7d7d; font-size: 12px; }
+.communityPickerSheet { display: grid; gap: 8px; }
+.communityPickerAccordion { display: grid; gap: 8px; }
+.communityPickerAccordionToggle { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 58px; align-items: center; gap: 12px; padding: 9px 12px; border: 1px solid #d0d0d0; border-radius: 10px; background: #fff; color: #343434; font: inherit; text-align: left; cursor: pointer; }
+.communityPickerAccordionToggle:hover { background: #fafafa; }
+.communityPickerAccordionToggle > span { display: grid; min-width: 0; gap: 3px; }
+.communityPickerAccordionToggle strong { font-size: 14px; font-weight: 650; line-height: 1.3; }
+.communityPickerAccordionToggle small { color: #808080; font-size: 12px; line-height: 1.25; }
+.communityPickerAccordionToggle svg { width: 18px; height: 18px; fill: none; stroke: #656565; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.communityPickerAccordionContent { display: grid; gap: 8px; }
+.communityPickerAccordionContent > input { width: 100%; min-height: 42px; padding: 0 2px; border: 0; border-bottom: 1px solid #d0d0d0; border-radius: 0; background: transparent; color: #292929; font: inherit; }
+.communityPickerList { display: grid; max-height: 184px; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: #8d8d8d #f0f0f0; border: 1px solid #d0d0d0; border-radius: 10px; background: #fff; }
+.communityPickerList::-webkit-scrollbar { width: 8px; }
+.communityPickerList::-webkit-scrollbar-track { margin: 5px 0; border-radius: 99px; background: #f0f0f0; }
+.communityPickerList::-webkit-scrollbar-thumb { border: 2px solid #f0f0f0; border-radius: 99px; background: #8d8d8d; }
+.communityPickerList button { min-height: 48px; padding: 0 12px; border: 0; border-bottom: 1px solid #e0e0e0; background: #fff; color: #363636; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+.communityPickerList button:last-child { border-bottom: 0; }
+.communityPickerList button:hover,
+.communityPickerList button[aria-selected="true"] { background: #f2f2f2; }
+.communityPickerEmpty { margin: 0; padding: 14px 12px; color: #777; font-size: 13px; line-height: 1.4; }
+.communityLocationActions { display: grid; gap: 9px; }
+.communityLocationActions button { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 62px; align-items: center; gap: 12px; padding: 11px 12px; border: 1px solid #d0d0d0; border-radius: 10px; background: #fff; color: #343434; font: inherit; text-align: left; cursor: pointer; }
+.communityLocationActions button:hover:not(:disabled) { background: #fafafa; }
+.communityLocationActions button:disabled { color: #999; cursor: not-allowed; }
+.communityLocationActions button > span { display: grid; gap: 3px; }
+.communityLocationActions strong { font-size: 14px; font-weight: 650; }
+.communityLocationActions small { color: #808080; font-size: 12px; }
+.communityLocationActions svg { width: 18px; height: 18px; fill: none; stroke: #656565; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.locationSheetAccordions { display: grid; gap: 8px; }
+.locationSheetAccordion { display: grid; gap: 8px; }
+.locationSheetAccordionRow { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 62px; align-items: center; gap: 12px; padding: 11px 12px; border: 1px solid #d0d0d0; border-radius: 10px; background: #fff; color: #343434; font: inherit; text-align: left; cursor: pointer; }
+.locationSheetAccordionRow:hover { background: #fafafa; }
+.locationSheetAccordionRow > span { display: grid; min-width: 0; gap: 3px; }
+.locationSheetAccordionRow strong { font-size: 14px; font-weight: 650; }
+.locationSheetAccordionRow small { color: #808080; font-size: 12px; }
+.locationSheetAccordionRow svg { width: 18px; height: 18px; fill: none; stroke: #656565; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.locationSheetAccordionContent { display: grid; gap: 8px; }
+.locationSheetAccordionContent > input { width: 100%; min-height: 42px; padding: 0 2px; border: 0; border-bottom: 1px solid #d0d0d0; border-radius: 0; background: transparent; color: #292929; font: inherit; }
+.communitySinglePicker { display: grid; gap: 12px; }
+.communitySinglePicker > input { width: 100%; min-height: 48px; padding: 0 12px; border: 1px solid #c7c7c7; border-radius: 10px; background: #fff; color: #292929; font: inherit; }
+.communitySinglePicker .communityPickerList { max-height: min(52svh, 440px); }
+.communityPickerSave { position: fixed; right: max(16px, calc((100vw - 480px) / 2 + 16px)); bottom: max(16px, env(safe-area-inset-bottom)); left: max(16px, calc((100vw - 480px) / 2 + 16px)); z-index: 82; min-height: 50px; border: 1px solid #303030; border-radius: 10px; background: #303030; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
+.communityPickerSave:hover:not(:disabled) { background: #464646; }
+.communityPickerSave:disabled { border-color: #bebebe; background: #bebebe; color: #f5f5f5; cursor: not-allowed; }
+.communityPlaceholderText { margin: 0; color: #666; font-size: 14px; line-height: 1.5; }
+
+/* Country Guide shares Community's location state but remains its own mobile home screen. */
+.countryGuideScreen { width: min(100%, 480px); min-height: 100svh; margin: 0 auto; padding-bottom: 82px; background: #fff; color: #242424; }
+.countryGuideScreen button,
+.countryGuideScreen input { font: inherit; }
+.countryGuideScreen svg { display: block; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.countryGuideBar { display: grid; gap: 4px; padding: 11px 16px 10px; border-bottom: 1px solid #cfcfcf; background: #fff; }
+.countryGuideBar h1 { margin: 0; color: #242424; font-family: inherit; font-size: 18px; line-height: 1.25; }
+.countryGuideLocation { display: inline-flex; width: fit-content; min-height: 28px; align-items: center; gap: 4px; padding: 0; border: 0; background: transparent; color: #666; font-size: 13px; cursor: pointer; }
+.countryGuideLocation svg { width: 16px; height: 16px; stroke-width: 1.7; }
+.countryGuideContent { display: grid; gap: 18px; padding: 17px 16px 20px; }
+.countryGuideIntro { margin: 0; color: #777; font-size: 13px; line-height: 1.45; }
+.countryGuideSearch { width: 100%; min-height: 48px; padding: 0 12px; border: 1px solid #c7c7c7; border-radius: 10px; background: #fff; color: #292929; }
+.countryGuideTopicSection { display: grid; gap: 10px; }
+.countryGuideTopicSection h2 { margin: 0; color: #343434; font-family: inherit; font-size: 16px; line-height: 1.3; }
+.countryGuideTopicList { display: grid; gap: 9px; }
+.countryGuideTopic { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 67px; align-items: center; gap: 12px; padding: 12px; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; color: #303030; text-align: left; cursor: pointer; }
+.countryGuideTopic:hover,
+.countryGuideAi:hover { background: #fafafa; }
+.countryGuideTopic:focus-visible,
+.countryGuideAi:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+.countryGuideTopic > span,
+.countryGuideAi > span { display: grid; min-width: 0; gap: 4px; }
+.countryGuideTopic strong,
+.countryGuideAi strong { color: #303030; font-size: 14px; line-height: 1.3; font-weight: 650; }
+.countryGuideTopic small,
+.countryGuideAi small { color: #808080; font-size: 12px; line-height: 1.35; }
+.countryGuideTopic svg,
+.countryGuideAi svg { width: 18px; height: 18px; color: #656565; stroke-width: 1.7; }
+.countryGuideNoResults { margin: 0; padding: 13px 0; color: #777; font-size: 13px; }
+.countryGuideAi { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 62px; align-items: center; gap: 12px; padding: 12px; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; color: #303030; text-align: left; cursor: pointer; }
+.countryGuideAiNote { margin: -10px 0 0; color: #8a8a8a; font-size: 11px; line-height: 1.4; }
+.countryGuideAiSheet { display: grid; gap: 9px; }
+.countryGuideAiSheet > p { margin: 0 0 4px; color: #666; font-size: 13px; line-height: 1.45; }
+.countryGuideAiSheet > button { display: grid; grid-template-columns: minmax(0, 1fr) 18px; width: 100%; min-height: 52px; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid #d0d0d0; border-radius: 10px; background: #fff; color: #343434; font: inherit; text-align: left; cursor: pointer; }
+.countryGuideAiSheet svg { width: 18px; height: 18px; fill: none; stroke: #656565; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.countryGuideAiSheet > small { color: #858585; font-size: 11px; line-height: 1.4; }
+.countryGuideDetailBar { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; min-height: 56px; align-items: center; padding: 6px 12px; border-bottom: 1px solid #d2d2d2; }
+.countryGuideDetailBar button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border: 0; border-radius: 9px; background: transparent; color: #292929; cursor: pointer; }
+.countryGuideDetailBar button:hover { background: #f1f1f1; }
+.countryGuideDetailBar svg { width: 24px; height: 24px; }
+.countryGuideDetailBar h1 { margin: 0; color: #242424; font-family: inherit; font-size: 18px; line-height: 1.2; text-align: center; }
+.countryGuideArticleContent { gap: 14px; }
+.countryGuideArticleList { display: grid; overflow: hidden; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; }
+.countryGuideArticleList button { display: grid; grid-template-columns: minmax(0, 1fr) 18px; min-height: 54px; align-items: center; gap: 12px; padding: 10px 12px; border: 0; border-bottom: 1px solid #dedede; background: #fff; color: #343434; font: inherit; text-align: left; cursor: pointer; }
+.countryGuideArticleList button:last-child { border-bottom: 0; }
+.countryGuideArticleList svg { width: 18px; height: 18px; color: #656565; stroke-width: 1.7; }
+.countryGuideDetailContent { gap: 15px; }
+.countryGuideArticleCountry { margin: 0; color: #666; font-size: 13px; font-weight: 650; }
+.countryGuideArticleIntro { margin: 0; color: #414141; font-size: 15px; line-height: 1.5; }
+.countryGuideArticlePoints { display: grid; gap: 10px; padding: 14px; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; }
+.countryGuideArticlePoints h2,
+.countryGuideRelated h2 { margin: 0; color: #343434; font-family: inherit; font-size: 15px; }
+.countryGuideArticlePoints ul { display: grid; gap: 7px; margin: 0; padding-left: 18px; color: #4b4b4b; font-size: 13px; line-height: 1.4; }
+.countryGuideProcedure { display: grid; gap: 12px; }
+.countryGuideProcedure > div { display: grid; gap: 9px; padding: 14px; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; }
+.countryGuideProcedure h2,
+.countryGuideOfficialSources h2,
+.countryGuideContractGuide h2 { margin: 0; color: #343434; font-family: inherit; font-size: 15px; }
+.countryGuideProcedure ol,
+.countryGuideProcedure ul { display: grid; gap: 8px; margin: 0; padding-left: 20px; color: #4b4b4b; font-size: 13px; line-height: 1.4; }
+.countryGuideOfficialSources { display: grid; gap: 10px; }
+.countryGuideOfficialSources > div { display: grid; overflow: hidden; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; }
+.countryGuideOfficialSources button { display: grid; grid-template-columns: minmax(0, 1fr) 18px; min-height: 68px; align-items: center; gap: 12px; padding: 12px; border: 0; border-bottom: 1px solid #dedede; background: #fff; color: #343434; font: inherit; text-align: left; cursor: pointer; }
+.countryGuideOfficialSources button:last-child { border-bottom: 0; }
+.countryGuideOfficialSources button > span { display: grid; gap: 3px; }
+.countryGuideOfficialSources strong { font-size: 14px; font-weight: 650; }
+.countryGuideOfficialSources small { color: #777; font-size: 12px; line-height: 1.35; }
+.countryGuideOfficialSources em { color: #858585; font-size: 11px; font-style: normal; }
+.countryGuideOfficialSources svg { width: 18px; height: 18px; color: #656565; stroke-width: 1.7; }
+.countryGuideContractGuide { display: grid; gap: 10px; }
+.countryGuideContractGuide > div { display: grid; overflow: hidden; border: 1px solid #cdcdcd; border-radius: 10px; background: #fff; }
+.countryGuideContractGuide > div > div { display: grid; gap: 3px; padding: 11px 12px; border-bottom: 1px solid #dedede; }
+.countryGuideContractGuide > div > div:last-child { border-bottom: 0; }
+.countryGuideContractGuide strong { font-size: 14px; font-weight: 650; }
+.countryGuideContractGuide small,
+.countryGuideContractGuide > p:last-child { color: #777; font-size: 12px; line-height: 1.4; }
+.countryGuideContractGuide > p:last-child { margin: 0; padding: 12px; border: 1px solid #dedede; border-radius: 10px; background: #f7f7f7; }
+.countryGuideSource { display: grid; gap: 3px; padding: 12px; border: 1px solid #dedede; border-radius: 10px; background: #f7f7f7; }
+.countryGuideSource strong { color: #4a4a4a; font-size: 12px; }
+.countryGuideSource small { color: #818181; font-size: 12px; }
+.countryGuideRelated { display: grid; gap: 10px; }
+.countryGuideAiResponse { margin: 0; padding: 12px; border: 1px solid #dedede; border-radius: 10px; background: #f5f5f5; color: #4e4e4e; font-size: 13px; line-height: 1.45; }
+.countryGuideChecklist { display: grid; gap: 9px; padding: 12px; border: 1px solid #dedede; border-radius: 10px; background: #f7f7f7; }
+.countryGuideChecklist label { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 9px; align-items: start; color: #4b4b4b; font-size: 13px; line-height: 1.4; }
+.countryGuideChecklist input { width: 16px; height: 16px; margin: 0; accent-color: #333; }
+
+/* Candidate-controlled application flow: separate from the profile, but using the same neutral mobile system. */
+.applicationFlowMode { background: #e9e9e9; }
+.applicationFlowScreen { width: min(100%, 480px); min-height: 100svh; margin: 0 auto; padding-bottom: 154px; background: #fff; color: #242424; }
+.applicationFlowScreen button,
+.applicationFlowScreen input { font: inherit; }
+.applicationFlowScreen button:focus-visible,
+.applicationFlowScreen input:focus-visible { outline: 2px solid #444; outline-offset: 2px; }
+.applicationFlowScreen svg { display: block; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.applicationFlowBar { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; min-height: 56px; align-items: center; padding: 6px 12px; border-bottom: 1px solid #d2d2d2; background: #fff; }
+.applicationFlowBar button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border: 0; border-radius: 9px; background: transparent; color: #292929; cursor: pointer; }
+.applicationFlowBar button:hover { background: #f1f1f1; }
+.applicationFlowBar svg { width: 24px; height: 24px; }
+.applicationFlowBar h1 { margin: 0; color: #242424; font-family: inherit; font-size: 18px; line-height: 1.2; text-align: center; }
+.applicationFlowContent { display: grid; gap: 17px; padding: 20px 16px 0; }
+.applicationFlowContent h2 { margin: 0; color: #292929; font-family: inherit; font-size: 17px; line-height: 1.3; }
+.applicationJobSummary,
+.applicationQuestion,
+.applicationCvPreview,
+.applicationChanges,
+.applicationAnonymousProfile,
+.applicationSharingList { border: 1px solid #d0d0d0; border-radius: 10px; background: #fff; }
+.applicationJobSummary { display: grid; gap: 5px; padding: 15px; }
+.applicationJobSummary p,
+.applicationCvHeading p { margin: 0; color: #777; font-size: 12px; font-weight: 650; }
+.applicationJobSummary h2 { font-size: 21px; }
+.applicationJobSummary strong,
+.applicationCvHeading strong { color: #484848; font-size: 14px; font-weight: 550; }
+.applicationJobSummary span { color: #757575; font-size: 13px; line-height: 1.35; }
+.applicationSection { display: grid; gap: 0; }
+.applicationSection > h2 { margin-bottom: 4px; }
+.applicationRequirement { display: flex; min-height: 48px; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #dedede; color: #363636; font-size: 14px; }
+.applicationRequirement:last-child { border-bottom: 0; }
+.applicationRequirement small { flex: 0 0 auto; color: #858585; font-size: 11px; text-align: right; }
+.applicationIntro { margin: 0; color: #555; font-size: 14px; line-height: 1.5; }
+.applicationQuestionList { display: grid; gap: 12px; }
+.applicationQuestion { padding: 15px; }
+.applicationQuestion h2 { font-size: 15px; }
+.applicationQuestion p { margin: 8px 0 14px; color: #777; font-size: 13px; line-height: 1.45; }
+.applicationChoiceGroup { display: flex; gap: 8px; }
+.applicationChoiceGroup button { min-width: 64px; min-height: 36px; padding: 6px 10px; border: 1px solid #c8c8c8; border-radius: 8px; background: #fff; color: #4c4c4c; font-size: 13px; cursor: pointer; }
+.applicationChoiceGroup button.selected { border-color: #4a4a4a; background: #eaeaea; color: #292929; font-weight: 700; }
+.applicationSecondaryNote { margin: 0; color: #858585; font-size: 12px; line-height: 1.45; }
+.applicationCvHeading { display: grid; gap: 5px; }
+.applicationCvPreview { display: grid; gap: 14px; padding: 16px; }
+.applicationCvPreview header { display: grid; gap: 3px; padding-bottom: 12px; border-bottom: 1px solid #dedede; }
+.applicationCvPreview header strong { color: #292929; font-size: 18px; }
+.applicationCvPreview header span { color: #414141; font-size: 14px; }
+.applicationCvPreview header small { color: #777; font-size: 12px; }
+.applicationCvPreview > div { display: grid; gap: 5px; }
+.applicationCvPreview h3 { margin: 0; color: #606060; font-family: inherit; font-size: 11px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+.applicationCvPreview p { margin: 0; color: #424242; font-size: 13px; line-height: 1.45; }
+.applicationCvPreview p span { color: #777; font-size: 12px; }
+.applicationCvPreview ul { margin: 0; padding-left: 17px; color: #424242; font-size: 13px; line-height: 1.45; }
+.applicationChanges,
+.applicationAnonymousProfile,
+.applicationSharingList { display: grid; gap: 10px; padding: 15px; }
+.applicationChanges h2,
+.applicationAnonymousProfile h2,
+.applicationSharingList h2 { font-size: 15px; }
+.applicationChanges ul,
+.applicationAnonymousProfile ul,
+.applicationSharingList ul { display: grid; gap: 7px; margin: 0; padding-left: 18px; color: #4d4d4d; font-size: 13px; line-height: 1.4; }
+.applicationChanges p { margin: 0; color: #858585; font-size: 12px; line-height: 1.4; }
+.applicationChanges { overflow: hidden; gap: 0; padding: 0; border: 1px solid #d0d0d0; border-radius: 10px; background: #fff; }
+.applicationChangesToggle { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: space-between; gap: 12px; padding: 0 13px; border: 0; background: #fff; color: #363636; font: inherit; font-size: 13px; font-weight: 650; text-align: left; cursor: pointer; }
+.applicationChangesToggle svg { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: #656565; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.applicationChangesDetails { display: grid; gap: 10px; padding: 0 15px 15px; border-top: 1px solid #e1e1e1; }
+.applicationChangesDetails ul { padding-top: 12px; }
+.applicationPrivacyNote { margin: 0; color: #727272; font-size: 12px; line-height: 1.45; }
+.applicationConsent { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; align-items: start; color: #363636; font-size: 13px; line-height: 1.45; cursor: pointer; }
+.applicationConsent input { width: 18px; height: 18px; margin: 0; accent-color: #333; }
+.applicationFixedButton { position: fixed; right: max(16px, calc((100vw - 480px) / 2 + 16px)); bottom: max(84px, calc(env(safe-area-inset-bottom) + 72px)); left: max(16px, calc((100vw - 480px) / 2 + 16px)); z-index: 45; min-height: 50px; border: 1px solid #303030; border-radius: 10px; background: #303030; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
+.applicationFixedButton:hover:not(:disabled) { background: #464646; }
+.applicationFixedButton:disabled { border-color: #bebebe; background: #bebebe; color: #f5f5f5; cursor: not-allowed; }
+.applicationFixedActions { position: fixed; right: max(16px, calc((100vw - 480px) / 2 + 16px)); bottom: max(84px, calc(env(safe-area-inset-bottom) + 72px)); left: max(16px, calc((100vw - 480px) / 2 + 16px)); z-index: 45; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.applicationFixedActions button { min-width: 0; min-height: 50px; border-radius: 10px; font: inherit; font-weight: 750; cursor: pointer; }
+.applicationEditButton { border: 1px solid #bdbdbd; background: #fff; color: #3e3e3e; }
+.applicationEditButton:hover { background: #f3f3f3; }
+.applicationApproveButton { border: 1px solid #303030; background: #303030; color: #fff; }
+.applicationApproveButton:hover:not(:disabled) { background: #464646; }
+.applicationApproveButton:disabled { border-color: #bebebe; background: #bebebe; color: #f5f5f5; cursor: not-allowed; }
+.applicationSuccessState { display: grid; justify-items: center; gap: 12px; padding: 54px 18px 26px; text-align: center; }
+.applicationSuccessState > div { display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid #777; border-radius: 50%; color: #3d3d3d; font-size: 25px; }
+.applicationSuccessState h2 { font-size: 22px; }
+.applicationSuccessState p { max-width: 320px; margin: 0; color: #666; font-size: 14px; line-height: 1.5; }
+.applicationSuccessActions { display: grid; gap: 9px; }
+.applicationSuccessActions button { min-height: 48px; border: 1px solid #c7c7c7; border-radius: 10px; background: #fff; color: #333; font: inherit; font-weight: 650; cursor: pointer; }
+.applicationSuccessActions button:first-child { border-color: #303030; background: #303030; color: #fff; }
+
 .profileMobileScreen button,
 .profileMobileScreen input { font: inherit; }
 
@@ -814,6 +1102,7 @@ button.experienceDateBox { cursor: pointer; }
 .bottomSheet.large { height: calc(100svh - 22px); max-height: calc(100svh - 22px); overflow-y: auto; padding-bottom: max(96px, calc(env(safe-area-inset-bottom) + 80px)); }
 .sheetHandle { width: 36px; height: 4px; margin: 0 auto 15px; border-radius: 99px; background: #c6c6c6; }
 .bottomSheet h2 { margin: 0 0 16px; color: #242424; font-family: inherit; font-size: 20px; }
+.bottomSheet h2.sheetTitleCentered { padding: 0 40px; text-align: center; }
 .sheetCloseButton { position: absolute; top: 10px; right: 12px; display: grid; width: 34px; height: 34px; place-items: center; padding: 0; border: 0; border-radius: 8px; background: transparent; color: #343434; cursor: pointer; }
 .sheetCloseButton:hover { background: #f2f2f2; }
 .sheetCloseButton svg { width: 20px; height: 20px; stroke-width: 1.8; }
@@ -1002,6 +1291,9 @@ button.profileActionCard:hover { background: #f8f8f8; }
 .accordionChevron { color: #555; font-size: 18px; }
 
 .myResumeLabel { margin: 26px 0 8px; color: #000; font-size: 14px; line-height: 1.3; }
+.identityVerificationSection { margin-top: 18px; }
+.identityVerificationSection .profileAccordion { border-color: #aaa; border-radius: 10px; }
+.identityVerificationSection .profileAccordion > button { min-height: 50px; padding: 0 12px; background: #fff; font-weight: 650; }
 .myResumeLabel + .profileAccordions { margin-top: 0; }
 .profileAccordions { display: grid; gap: 12px; margin-top: 18px; }
 .profileAccordion { overflow: hidden; border: 1px solid #b8b8b8; border-radius: 11px; background: #fff; }
@@ -1019,7 +1311,20 @@ button.profileActionCard:hover { background: #f8f8f8; }
   text-align: left;
   cursor: pointer;
 }
+.profileAccordionHeaderEnd { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 9px; }
+.profileAccordionHeaderEnd small { color: #747474; font-size: 12px; font-weight: 500; }
 .profileAccordionPanel { padding: 15px 14px; border-top: 1px solid #ccc; }
+.identityVerificationIntro { margin: 0 0 14px; color: #4b4b4b; font-size: 13px; line-height: 1.45; }
+.identityVerificationRow { display: grid; grid-template-columns: minmax(0, 1fr) auto 18px; width: 100%; align-items: center; gap: 10px; padding: 14px 0; border: 0; border-bottom: 1px solid #ddd; background: transparent; color: #292929; font: inherit; text-align: left; cursor: pointer; }
+.identityVerificationRow:hover { background: #fafafa; }
+.identityVerificationRowCopy { display: grid; min-width: 0; gap: 3px; }
+.identityVerificationRowCopy strong { color: #292929; font-size: 14px; font-weight: 700; }
+.identityVerificationRowCopy small { color: #727272; font-size: 12px; line-height: 1.35; }
+.identityVerificationRowStatus { color: #777; font-size: 11px; text-align: right; }
+.identityVerificationRow svg { width: 18px; height: 18px; fill: none; stroke: #656565; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.identityVerificationPrivacy { margin: 13px 0 0; color: #858585; font-size: 11px; line-height: 1.4; }
+.identityVerificationConfirmation { margin: 13px 0 0; color: #4a4a4a; font-size: 12px; font-weight: 650; }
+.identityVerificationDemoAction { margin-top: 12px; padding: 0; border: 0; background: transparent; color: #5e5e5e; font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .workExperienceSummary { margin: 0 0 14px; color: #686868; font-size: 13px; line-height: 1.35; }
 .workExperienceSummary strong { color: #363636; font-weight: 650; }
 .companyExperience { padding: 0 0 17px; }
@@ -1063,6 +1368,30 @@ button.profileActionCard:hover { background: #f8f8f8; }
 .secondarySectionAction { display: flex; width: 100%; min-height: 44px; align-items: center; justify-content: center; margin-top: 12px; padding: 9px 12px; border: 1px solid #dedede; border-radius: 10px; background: #f5f5f5; color: #3e3e3e; font: inherit; font-size: 13px; font-weight: 650; text-align: center; cursor: pointer; }
 .secondarySectionAction:hover { background: #efefef; }
 .secondarySectionAction:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+.certificateSubsectionHeading { margin: 0 0 10px; color: #4b4b4b; font-size: 12px; font-weight: 700; line-height: 1.35; }
+.regionalRecommendations { margin-top: 20px; padding-top: 17px; border-top: 1px solid #ddd; }
+.regionalRecommendationsToggle { display: flex; width: 100%; min-height: 38px; align-items: center; justify-content: space-between; gap: 12px; padding: 0; border: 0; background: transparent; color: #4b4b4b; font: inherit; font-size: 12px; font-weight: 700; text-align: left; cursor: pointer; }
+.regionalRecommendationsToggle svg { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: #656565; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.regionalRecommendationsContent { padding-top: 7px; }
+.regionalRecommendationsNote { margin: -3px 0 11px; color: #858585; font-size: 11px; line-height: 1.4; }
+.regionalRecommendationRow { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border: 0; border-bottom: 1px solid #ddd; background: transparent; color: #292929; font: inherit; text-align: left; cursor: pointer; }
+.regionalRecommendationRow:hover { background: #fafafa; }
+.regionalRecommendationRow:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+.regionalRecommendationRowCopy { display: grid; min-width: 0; gap: 4px; }
+.regionalRecommendationRowCopy strong { color: #303030; font-size: 14px; line-height: 1.3; font-weight: 650; }
+.regionalRecommendationRowCopy small { color: #858585; font-size: 12px; line-height: 1.35; }
+.regionalRecommendationSheet { display: grid; gap: 18px; }
+.regionalRecommendationSheet > p { margin: 0; color: #4e4e4e; font-size: 14px; line-height: 1.5; }
+.regionalRecommendationLearnMore { padding: 13px; border: 1px solid #dedede; border-radius: 10px; background: #f5f5f5; color: #555; }
+.regionalRecommendationLearnMore strong { color: #3e3e3e; font-size: 13px; }
+.regionalRecommendationLearnMore p { margin: 7px 0 0; font-size: 13px; line-height: 1.45; }
+.regionalRecommendationActions { display: grid; gap: 8px; }
+.regionalRecommendationActions button { min-height: 46px; padding: 9px 12px; border: 1px solid #c9c9c9; border-radius: 10px; background: #fff; color: #3e3e3e; font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; }
+.regionalRecommendationActions button:hover { background: #f4f4f4; }
+.regionalRecommendationActions .regionalRecommendationPrimary { border-color: #303030; background: #303030; color: #fff; }
+.regionalRecommendationActions .regionalRecommendationPrimary:hover { background: #464646; }
+.regionalRecommendationList { display: grid; gap: 0; }
+.regionalRecommendationList > p { margin: 0 0 10px; color: #777; font-size: 12px; line-height: 1.4; }
 .skillAddMock { display: grid; gap: 20px; }
 .skillAddMock input { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid #c7c7c7; border-radius: 10px; background: #fff; color: #292929; font: inherit; }
 .skillSuggestions { display: grid; gap: 10px; }
@@ -1087,8 +1416,23 @@ button.profileActionCard:hover { background: #f8f8f8; }
 .skillAddButton { position: fixed; right: max(16px, calc((100vw - 480px) / 2 + 16px)); bottom: max(16px, env(safe-area-inset-bottom)); left: max(16px, calc((100vw - 480px) / 2 + 16px)); z-index: 82; min-height: 50px; border: 1px solid #303030; border-radius: 10px; background: #303030; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
 .skillAddButton:hover:not(:disabled) { background: #464646; }
 .skillAddButton:disabled { border-color: #bfbfbf; background: #bfbfbf; cursor: not-allowed; }
+.identitySheetForm { display: grid; gap: 14px; }
+.identityUploadPlaceholder { display: flex; min-height: 64px; align-items: center; justify-content: center; gap: 9px; padding: 12px; border: 1px dashed #bdbdbd; border-radius: 10px; background: #f8f8f8; color: #555; font: inherit; font-size: 13px; cursor: pointer; }
+.identityUploadPlaceholder svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.governmentServiceSheet { display: grid; gap: 16px; }
+.governmentServiceSheet > p { margin: 0; color: #555; font-size: 14px; line-height: 1.45; }
+.identityContinueButton { position: fixed; right: max(16px, calc((100vw - 480px) / 2 + 16px)); bottom: max(16px, env(safe-area-inset-bottom)); left: max(16px, calc((100vw - 480px) / 2 + 16px)); z-index: 82; min-height: 50px; border: 1px solid #303030; border-radius: 10px; background: #303030; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
+.identityContinueButton:hover { background: #464646; }
 .educationListContent { gap: 0; }
 .educationEditForm { gap: 18px; }
+.additionalEducationEditForm { gap: 14px; }
+.additionalEducationDetailScreen .personalSaveButton:disabled { border-color: #bfbfbf; background: #bfbfbf; cursor: not-allowed; }
+.additionalEducationSearch { display: grid; gap: 14px; }
+.additionalEducationSearch > input { width: 100%; min-height: 48px; padding: 0 12px; border: 1px solid #c7c7c7; border-radius: 10px; background: #fff; color: #292929; font: inherit; }
+.additionalEducationSearchResults { display: grid; gap: 8px; }
+.additionalEducationSearchResults button { min-height: 48px; padding: 10px 12px; border: 1px solid #d1d1d1; border-radius: 10px; background: #f7f7f7; color: #333; font: inherit; text-align: left; cursor: pointer; }
+.additionalEducationSearchResults button:hover { background: #eeeeee; }
+.additionalEducationSearchResults p { margin: 0; color: #777; font-size: 13px; }
 .educationLevelSection,
 .educationInstitutionSection,
 .educationResumeSection { display: grid; gap: 9px; }
